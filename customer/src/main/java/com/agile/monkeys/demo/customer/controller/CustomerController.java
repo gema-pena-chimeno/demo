@@ -18,11 +18,19 @@ public class CustomerController {
 
     private CustomerService customerService;
     
-//    // to add new customer
-//    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PostMapping(value = "/create"  )
+    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public Customer save(@RequestBody Customer customer) {
         return customerService.save(customer);
+    }
+
+    @PutMapping(value = "update", produces = MediaType.APPLICATION_JSON_VALUE)        // or use @DeleteMapping
+    public void update(@RequestBody Customer customer){
+        customerService.update(customer);
+    }
+
+    @DeleteMapping(value = "delete", produces = MediaType.APPLICATION_JSON_VALUE)        // or use @DeleteMapping
+    public void delete(@RequestParam("id") String id){
+        customerService.delete(id);
     }
 
     @GetMapping(path = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -30,24 +38,13 @@ public class CustomerController {
         return customerService.findAll();
     }
 
-//    //@GetMapping(path = "/{customerId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public Customer getCustomer(@PathVariable("customerId") String customerId) {
-//        return customerService.findCustomerById(customerId);
-//    }
-//
-//    // delete specific customer using customer id
-//    @RequestMapping(value = "delete", method = RequestMethod.DELETE)        // or use @DeleteMapping
-//    public void delete(@RequestParam("id")long id){
-//        customerService.delete(id);
-//    }
-//    // search customer start with name
-//    @RequestMapping(value = "startWithName/{name}")
-//    public List<Customer> findByName(@PathVariable("name")String name){
-//        return customerService.findCustomerByCustomerNameStartingWith(name);
-//    }
-//    // search customer by role
-//    @RequestMapping(value = "findByRole/{role}")
-//    public List<Customer> findByRole(@PathVariable("role")String role){
-//        return customerService.findCustomerByCustomerRole(role);
-//    }
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Customer getCustomer(@PathVariable("id") String id) {
+        return customerService.findCustomerById(id);
+    }
+
+    @GetMapping(path = "/search/{query}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Customer> search(@PathVariable("query") String query) {
+        return customerService.findByQuery(query);
+    }
 }

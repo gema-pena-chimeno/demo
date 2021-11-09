@@ -16,12 +16,17 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true  #stops angry clob error on startup
-
     database-platform: org.hibernate.dialect.PostgreSQL94Dialect
-#    database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: false
     hibernate:
       ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO} # none, update
+
+images:
+  folder: ${IMAGE_FOLDER}
+hibernate:
+  jdbc:
+    lob:
+      non_contextual_creation: true #stops angry clob error on startup
 
 server:
   compression:

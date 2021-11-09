@@ -13,30 +13,33 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public List<Customer> findCustomerByCustomerNameStartingWith(String name) {
-        return null;
-
-    } // fetch list of Customer which start with
-    public List<Customer> findCustomerByCustomerRole(String role) {
-        return null;
-
-    }
-
     public Customer findCustomerById(String id) {
         return customerRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
-
     }
-    // fetch Customer by role
+
     public List<Customer> findAll() {
         return customerRepository.findAll();
+    }
+
+    public List<Customer> findByQuery(String query) {
+        return customerRepository.findByQuery(query + "%");
     }
 
     public Customer save(Customer customer) {
         return customerRepository.save(customer);
     }
 
-    public void delete(long CustomerId) {
+    public Customer update(Customer customer) {
+        Customer customerFromDb = customerRepository.findById(customer.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
 
+        customerFromDb.setFirstName(customer.getFirstName());
+        customerFromDb.setLastName(customer.getLastName());
+        return customerRepository.save(customerFromDb);
+    }
+
+    public void delete(String id) {
+        customerRepository.deleteById(id);
     }
 }

@@ -7,14 +7,18 @@ import java.util.List;
 
 public interface CustomerService {
 
-    List<Customer> findCustomerByCustomerNameStartingWith(String name); // fetch list of Customer which start with
-    List<Customer> findCustomerByCustomerRole(String role);
     Customer findCustomerById(String id);
+
+    List<Customer> findByQuery(String query);
+
     List<Customer> findAll();
 
     @Transactional
     Customer save(Customer Customer);
 
     @Transactional
-    void delete(long CustomerId);
+    Customer update(Customer Customer);
+
+    @Transactional
+    void delete(String id);
 }
