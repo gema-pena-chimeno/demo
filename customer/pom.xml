@@ -23,9 +23,10 @@
     <properties>
         <java.version>11</java.version>
 
-        <hibernate.version>5.2.12.Final</hibernate.version>
-        <hibernate-validator.version>5.3.6.Final</hibernate-validator.version>
-        <postgres.version>9.4.1212.jre7</postgres.version>
+<!--        <hibernate.version>5.2.12.Final</hibernate.version>-->
+        <hibernate.version>5.4.2.Final</hibernate.version>
+<!--        <hibernate-validator.version>5.3.6.Final</hibernate-validator.version>-->
+        <postgres.version>42.2.5</postgres.version>
         <testcontainers.version>1.16.0</testcontainers.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
@@ -56,11 +57,11 @@
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate-validator.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.hibernate</groupId>-->
+<!--            <artifactId>hibernate-validator</artifactId>-->
+<!--            <version>${hibernate-validator.version}</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>javax.validation</groupId>
@@ -185,6 +186,27 @@
             </plugin>
         </plugins>
     </build>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <url>https://repo.spring.io/snapshot</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <url>https://repo.spring.io/milestone</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+
+
+
+    <repositories>
+        <repository>
+            <id>repo1-maven</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+    </repositories>
 
 
 </project>

@@ -19,10 +19,11 @@ public class CustomerController {
     private CustomerService customerService;
     
 //    // to add new customer
-//    @RequestMapping(value = "/create",method = RequestMethod.POST)     // or user @PostMapping
-//    public Customer save(Customer customer){
-//        return customerService.save(customer);
-//    }
+//    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/create"  )
+    public Customer save(@RequestBody Customer customer) {
+        return customerService.save(customer);
+    }
 
     @GetMapping(path = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Customer> listCustomer() {

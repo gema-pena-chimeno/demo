@@ -29,11 +29,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
     // fetch Customer by role
     public List<Customer> findAll() {
-        return null;
+        return customerRepository.findAll();
     }
 
-    public Customer save(Customer Customer) {
-        return null;
+    public Customer save(Customer customer) {
+        return customerRepository.save(customer);
     }
 
     public void delete(long CustomerId) {

@@ -5,12 +5,20 @@ spring:
     active: ${ENVIRONMENT:development}
   datasource:
     driverClassName: org.postgresql.Driver
-    testOnBorrow: true
     url: ${SPRING_DATASOURCE_URL}
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
+    testOnBorrow: true
+    connectionTimeout: 120000
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true  #stops angry clob error on startup
+
+    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: false
     hibernate:
       ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO} # none, update

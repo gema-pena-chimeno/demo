@@ -13,6 +13,7 @@ import java.time.OffsetDateTime;
 @Data
 @ToString
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 public class Customer {
 
@@ -27,21 +28,23 @@ public class Customer {
     @Column(name = "id", updatable = false, nullable = false)
     private String id;
 
-    @NotNull
+    //@NotNull // TODO: keep?
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @NotNull
+    //@NotNull
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @Column(updatable = false)
     @CreationTimestamp
-    //@JsonFormat(shape = JsonFormat.Shape.STRING)
+        @JsonFormat(shape = JsonFormat.Shape.STRING)
     @Setter(AccessLevel.NONE)
     private OffsetDateTime createdAt;
 
     @Column
     @UpdateTimestamp
-    //@JsonFormat(shape = JsonFormat.Shape.STRING)
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @Setter(AccessLevel.NONE)
     private OffsetDateTime lastUpdated;
 
