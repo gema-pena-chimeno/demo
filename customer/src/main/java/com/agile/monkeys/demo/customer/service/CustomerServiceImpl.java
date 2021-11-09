@@ -1,6 +1,42 @@
 package com.agile.monkeys.demo.customer.service;
 
-public class CustomerService {
+import com.agile.monkeys.demo.customer.domain.Customer;
+import com.agile.monkeys.demo.customer.domain.CustomerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-    delete
+import java.util.List;
+
+@Service
+public class CustomerServiceImpl implements CustomerService {
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    public List<Customer> findCustomerByCustomerNameStartingWith(String name) {
+        return null;
+
+    } // fetch list of Customer which start with
+    public List<Customer> findCustomerByCustomerRole(String role) {
+        return null;
+
+    }
+
+    public Customer findCustomerById(String id) {
+        return customerRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+
+    }
+    // fetch Customer by role
+    public List<Customer> findAll() {
+        return null;
+    }
+
+    public Customer save(Customer Customer) {
+        return null;
+    }
+
+    public void delete(long CustomerId) {
+
+    }
 }

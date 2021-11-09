@@ -1,0 +1,79 @@
+spring:
+  application:
+    name: demo-customer
+  profiles:
+    active: ${ENVIRONMENT:development}
+  datasource:
+    driverClassName: org.postgresql.Driver
+    testOnBorrow: true
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: false
+    hibernate:
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO} # none, update
+
+server:
+  compression:
+    enabled: true
+    mime-types:
+      - application/json
+
+logging:
+  level:
+    com.bonial.cdp: DEBUG
+
+endpoints:
+  loggers:
+    sensitive: false # opening them on port 8081
+
+management:
+  health:
+    db:
+      enabled: false
+  info:
+    git:
+      mode: full
+
+---
+spring:
+  config:
+    activate:
+      on-profile: production
+---
+spring:
+  jpa:
+    show-sql: true
+  config:
+    activate:
+      on-profile: development
+
+---
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        cache: DEBUG
+        stat: DEBUG
+spring:
+  config:
+    activate:
+      on-profile: development, stage
+
+---
+spring:
+  config:
+    activate:
+      on-profile: production, stage
+---
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test
+    username: test
+    password: test
+  config:
+    activate:
+      on-profile: test

@@ -1,2 +1,6 @@
-package com.agile.monkeys.demo.customer.domain;public class CustomerRepository {
+package com.agile.monkeys.demo.customer.domain;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CustomerRepository extends JpaRepository<Customer, String> {
 }
