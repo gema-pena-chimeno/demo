@@ -2,7 +2,7 @@
 
 Customer REST API
 
-## Execute in local
+## Execute CustomerApplication
 
 ### Create database using docker
 
@@ -39,3 +39,18 @@ SPRING_DATASOURCE_URL = jdbc:postgresql://localhost:5432/customer_db
 SPRING_DATASOURCE_USERNAME = postgres
 SPRING_DATASOURCE_PASSWORD = 1234
 SPRING_JPA_HIBERNATE_DDL_AUTO = update
+
+## Execute in docker
+
+We also have the chance to execute 2 containers, one for the database and another for the application:
+
+Note that the database will be empty.
+
+Execute:
+`docker-compose up`
+
+In case that the imags must be built again execute:
+`docker-compose up --build`
+
+Execute this command to stop the containers"
+`docker-compose down`
