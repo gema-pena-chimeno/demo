@@ -20,11 +20,12 @@ spring:
     generate-ddl: false
     hibernate:
       ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO} # none, update
-#  open-in-view: false
+    open-in-view: false
 
 customer:
   image:
-    folder: ${IMAGE_FOLDER}
+    image_folder: ${IMAGE_FOLDER}
+    url_path: ${URL_PATH}
 
 hibernate:
   jdbc:

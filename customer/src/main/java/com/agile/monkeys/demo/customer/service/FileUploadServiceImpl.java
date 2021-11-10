@@ -12,13 +12,18 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileUploadServiceImpl implements FileUploadService {
 
     @Getter
-    @Value("${customer.image.folder}")
-    private String customerImagePath;
+    @Value("${customer.image.image_folder}")
+    private String imageFolder;
+
+    @Getter
+    @Value("${customer.image.url_path}")
+    private String urlPath;
 
     public void saveFile(String id,
                          String fileName,
                          MultipartFile multipartFile) {
-        Path uploadPath = Paths.get(customerImagePath + id);
+
+        Path uploadPath = Paths.get(imageFolder + id);
 
         try (InputStream inputStream = multipartFile.getInputStream()) {
             if (!Files.exists(uploadPath)) {
@@ -33,8 +38,10 @@ public class FileUploadServiceImpl implements FileUploadService {
     }
 
     public String getPhotoUrl(String id, String photo) {
-        if (photo == null || id == null) return null;
+        if (photo == null || id == null) {
+            return null;
+        }
 
-        return customerImagePath + id + "/" + photo;
+        return urlPath + "/" + id + "/" + photo;
     }
 }

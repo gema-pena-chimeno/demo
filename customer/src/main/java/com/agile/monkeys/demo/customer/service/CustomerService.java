@@ -1,6 +1,7 @@
 package com.agile.monkeys.demo.customer.service;
 
-import com.agile.monkeys.demo.customer.domain.Customer;
+import com.agile.monkeys.demo.customer.controller.CRUDDto;
+import com.agile.monkeys.demo.customer.controller.CustomerDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
@@ -8,17 +9,17 @@ import java.util.List;
 
 public interface CustomerService {
 
-    Customer findCustomerById(String id);
+    CustomerDto findCustomerById(String id);
 
-    List<Customer> findByQuery(String query);
+    List<CustomerDto> findByQuery(String query);
 
-    List<Customer> findAll();
-
-    @Transactional
-    Customer create(Customer customer, MultipartFile multipartFile);
+    List<CustomerDto> findAll();
 
     @Transactional
-    Customer update(Customer customer, MultipartFile multipartFile);
+    CustomerDto create(CRUDDto dto, MultipartFile multipartFile);
+
+    @Transactional
+    CustomerDto update(String id, CRUDDto dto, MultipartFile multipartFile);
 
     @Transactional
     void delete(String id);
