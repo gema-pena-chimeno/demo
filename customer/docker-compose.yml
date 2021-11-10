@@ -3,12 +3,11 @@ version: '2'
 services:
   db:
     container_name: demo-db
-#    image: 'postgres:13.1-alpine'
     image: 'postgres:9.4'
     env_file: ./.env
     restart: unless-stopped
     ports:
-      - "5432:5432"
+      - $DB_DOCKER_PORT_MAPPING
     environment:
       - POSTGRES_DB=$POSTGRES_DB
       - POSTGRES_USER=$POSTGRES_USER
@@ -22,9 +21,16 @@ services:
       context: .
     env_file: ./.env
     ports:
-      - "8080:8080"
+      - $APP_DOCKER_PORT_MAPPING
+    volumes:
+      - image-data:$IMAGE_FOLDER
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/$POSTGRES_DB
       - SPRING_DATASOURCE_USERNAME=$POSTGRES_USER
       - SPRING_DATASOURCE_PASSWORD=$POSTGRES_PASSWORD
       - SPRING_JPA_HIBERNATE_DDL_AUTO=$SPRING_JPA_HIBERNATE_DDL_AUTO
+      - IMAGE_FOLDER=$IMAGE_FOLDER
+      - URL_PATH=$URL_PATH
+
+volumes:
+  image-data:
