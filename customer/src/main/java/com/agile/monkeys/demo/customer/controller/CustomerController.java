@@ -1,10 +1,13 @@
 package com.agile.monkeys.demo.customer.controller;
 
 import com.agile.monkeys.demo.customer.service.CustomerService;
+import com.agile.monkeys.demo.customer.service.NotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -58,5 +61,10 @@ public class CustomerController {
     @GetMapping(path = "/search/{query}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<CustomerDto> search(@PathVariable("query") String query) {
         return customerService.findByQuery(query);
+    }
+
+    @ExceptionHandler({NotFoundException.class})
+    public ResponseEntity<Object> handleNotFoundException(NotFoundException e) {
+        return new ResponseEntity<>("Customer not found", HttpStatus.NOT_FOUND);
     }
 }

@@ -21,7 +21,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     public CustomerDto findCustomerById(String id) {
         Customer found = customerRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+                .orElseThrow(() -> new NotFoundException("Customer not found"));
         return toCustomerDto(found);
     }
 
@@ -54,7 +54,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     public CustomerDto update(String id, CRUDDto dto, MultipartFile multipartFile) {
         Customer customerFromDb = customerRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+                .orElseThrow(() -> new NotFoundException("Customer not found"));
 
         customerFromDb.setFirstName(dto.getFirstName());
         customerFromDb.setLastName(dto.getLastName());
@@ -70,7 +70,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     public void delete(String id) {
-        customerRepository.deleteById(id);
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Customer not found"));
+        customerRepository.delete(customer);
     }
 
     private String getFilenameFromMultipartFile(MultipartFile multipartFile) {
