@@ -1,6 +1,7 @@
 package com.agile.monkeys.demo.customer.service;
 
 import com.agile.monkeys.demo.customer.domain.Customer;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -14,10 +15,10 @@ public interface CustomerService {
     List<Customer> findAll();
 
     @Transactional
-    Customer save(Customer Customer);
+    Customer create(Customer customer, MultipartFile multipartFile);
 
     @Transactional
-    Customer update(Customer Customer);
+    Customer update(Customer customer, MultipartFile multipartFile);
 
     @Transactional
     void delete(String id);
