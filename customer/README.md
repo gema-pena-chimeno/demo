@@ -47,6 +47,9 @@ SPRING_JPA_HIBERNATE_DDL_AUTO = update
 Also add the parameter to save the images of the user:
 IMAGE_FOLDER = ${HOME}/image-data/
 
+And to create the URL to access to them:
+URL_PATH=/image-data
+
 ## Execute in docker
 
 We also have the chance to execute 2 containers, one for the database and another for the application:
