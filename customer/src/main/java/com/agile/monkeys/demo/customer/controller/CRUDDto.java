@@ -15,9 +15,8 @@ public class CRUDDto {
     private String firstName;
     private String lastName;
 
-    public Customer toCustomer(String id) {
+    public Customer toCustomer() {
         Customer customer = new Customer();
-        customer.setId(id);
         customer.setFirstName(this.firstName);
         customer.setLastName(this.lastName);
 

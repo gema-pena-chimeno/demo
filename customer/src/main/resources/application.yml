@@ -40,11 +40,11 @@ server:
 
 logging:
   level:
-    com.bonial.cdp: DEBUG
+    com.agile.monkeys.demo: INFO
 
-endpoints:
-  loggers:
-    sensitive: false # opening them on port 8081
+#endpoints:
+#  loggers:
+#    sensitive: false # opening them on port 8081
 
 management:
   health:
@@ -68,29 +68,30 @@ spring:
       on-profile: development
 
 ---
-logging:
-  level:
-    org:
-      hibernate:
-        SQL: DEBUG
-        cache: DEBUG
-        stat: DEBUG
 spring:
   config:
     activate:
       on-profile: development, stage
 
+logging:
+  level:
+    org.hibernate: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.cache: DEBUG
+    org.hibernate.stat: DEBUG
+    com.agile.monkeys.demo: DEBUG
 ---
 spring:
   config:
     activate:
       on-profile: production, stage
+
 ---
 spring:
+  config:
+    activate:
+      on-profile: test
   datasource:
     url: jdbc:postgresql://localhost:5432/test
     username: test
     password: test
-  config:
-    activate:
-      on-profile: test

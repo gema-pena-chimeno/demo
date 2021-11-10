@@ -17,5 +17,4 @@ public interface CustomerRepository extends JpaRepository<Customer, String> {
             "order by c.last_name asc",
             nativeQuery = true)
     List<Customer> findByQuery(@Param("query") String query);
-
 }

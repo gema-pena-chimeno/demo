@@ -41,7 +41,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     public CustomerDto create(CRUDDto dto, MultipartFile multipartFile) {
         String fileName = getFilenameFromMultipartFile(multipartFile);
-        Customer customer = dto.toCustomer(null);
+        Customer customer = dto.toCustomer();
         customer.setPhoto(fileName);
 
         Customer created = customerRepository.save(customer);
