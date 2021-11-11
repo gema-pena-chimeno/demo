@@ -1,4 +1,4 @@
-package com.agile.monkeys.demo.customer.domain;
+package com.agile.monkeys.demo.data;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
@@ -50,11 +50,13 @@ public class Customer {
     @Version
     private Long version;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by_user_id", nullable = false, updatable = false)
-    private User createdBy;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "updated_by_user_id")
-    private User updateBy;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    // TODO:
+//    //@JoinColumn(name = "created_by_user_id", nullable = false, updatable = false)
+//    @JoinColumn(name = "created_by_user_id", updatable = false)
+//    private User createdBy;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "updated_by_user_id")
+//    private User updateBy;
 }

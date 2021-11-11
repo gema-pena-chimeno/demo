@@ -1,8 +1,9 @@
 package com.agile.monkeys.demo.customer.service;
 
+import com.agile.monkeys.demo.data.Customer;
 import com.agile.monkeys.demo.customer.controller.CRUDDto;
 import com.agile.monkeys.demo.customer.controller.CustomerDto;
-import com.agile.monkeys.demo.customer.domain.Customer;
+//import com.agile.monkeys.demo.customer.domain.Customer;
 import com.agile.monkeys.demo.customer.domain.CustomerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

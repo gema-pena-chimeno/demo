@@ -1,4 +1,4 @@
-package com.agile.monkeys.demo.customer.domain;
+package com.agile.monkeys.demo.data;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
@@ -14,8 +14,8 @@ import java.time.OffsetDateTime;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Customer {
-
+@Table(name = "\"User\"")
+public class User {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -25,14 +25,11 @@ public class Customer {
     @Column(name = "id", updatable = false, nullable = false)
     private String id;
 
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
+    @Column(name = "userName", nullable = false)
+    private String userName;
 
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
-
-    @Column
-    private String photo;
+    @Column(name = "password", nullable = false)
+    private String password;
 
     @Column(updatable = false)
     @CreationTimestamp
@@ -46,15 +43,7 @@ public class Customer {
     @Setter(AccessLevel.NONE)
     private OffsetDateTime lastUpdated;
 
-    @Column(nullable = false)
+    @Column
     @Version
     private Long version;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by_user_id", nullable = false, updatable = false)
-    private User createdBy;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "updated_by_user_id")
-    private User updateBy;
 }
