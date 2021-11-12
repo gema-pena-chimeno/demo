@@ -3,7 +3,6 @@ package com.agile.monkeys.demo.customer.service;
 import com.agile.monkeys.demo.data.Customer;
 import com.agile.monkeys.demo.customer.controller.CRUDDto;
 import com.agile.monkeys.demo.customer.controller.CustomerDto;
-//import com.agile.monkeys.demo.customer.domain.Customer;
 import com.agile.monkeys.demo.customer.domain.CustomerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,7 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerRepository customerRepository;
     private FileUploadService fileUploadService;
 
-    public CustomerDto findCustomerById(String id) {
+    public CustomerDto findById(String id) {
         Customer found = customerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Customer not found"));
         return toCustomerDto(found);

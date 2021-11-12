@@ -1,5 +1,6 @@
 package com.agile.monkeys.demo.user.controller;
 
+import com.agile.monkeys.demo.user.service.NotFoundException;
 import com.agile.monkeys.demo.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
@@ -38,7 +39,7 @@ public class UserController {
                               @RequestParam(value = "photo", required = false) MultipartFile multipartFile,
                               @RequestPart("dto") @ApiParam(name = "dto", value = CRUD_DTO_FORMAT) @Valid CRUDDto dto) {
 
-        return userService.update(id, dto, multipartFile);
+        return userService.update(id, dto);
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)        // or use @DeleteMapping
@@ -53,12 +54,12 @@ public class UserController {
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDto getCustomer(@PathVariable("id") String id) {
-        return customerService.findCustomerById(id);
+        return userService.findById(id);
     }
 
     @GetMapping(path = "/search/{query}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UserDto> search(@PathVariable("query") String query) {
-        return customerService.findByQuery(query);
+        return userService.findByQuery(query);
     }
 
     @ExceptionHandler({NotFoundException.class})

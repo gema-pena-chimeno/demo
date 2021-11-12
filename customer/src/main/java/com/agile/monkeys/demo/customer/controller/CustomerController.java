@@ -55,7 +55,7 @@ public class CustomerController {
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomerDto getCustomer(@PathVariable("id") String id) {
-        return customerService.findCustomerById(id);
+        return customerService.findById(id);
     }
 
     @GetMapping(path = "/search/{query}", produces = MediaType.APPLICATION_JSON_VALUE)

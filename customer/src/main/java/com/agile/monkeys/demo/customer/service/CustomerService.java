@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CustomerService {
 
-    CustomerDto findCustomerById(String id);
+    CustomerDto findById(String id);
 
     List<CustomerDto> findByQuery(String query);
 
