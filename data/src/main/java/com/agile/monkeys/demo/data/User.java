@@ -25,11 +25,14 @@ public class User {
     @Column(name = "id", updatable = false, nullable = false)
     private String id;
 
-    @Column(name = "userName", nullable = false)
+    @Column(name = "userName", nullable = false, unique = true)
     private String userName;
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Column(name = "role", nullable = false)
+    private String role;
 
     @Column(updatable = false)
     @CreationTimestamp
