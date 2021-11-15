@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,10 +37,11 @@ public class CustomerController {
         return customerService.create(dto, multipartFile, principal.getName());
     }
 
+    // How to make a difference between no image or ignore image...
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomerDto update(@PathVariable(value = "id") String id,
-                       @RequestParam(value = "photo", required = false) MultipartFile multipartFile,
-                       @RequestPart("dto") @ApiParam(name = "dto", value = CRUD_DTO_FORMAT) @Valid CRUDDto dto,
+                              @RequestParam(value = "photo", required = false) MultipartFile multipartFile,
+                              @RequestPart("dto") @ApiParam(name = "dto", value = CRUD_DTO_FORMAT) @Valid CRUDDto dto,
                               Principal principal) {
 
         return customerService.update(id, dto, multipartFile, principal.getName());

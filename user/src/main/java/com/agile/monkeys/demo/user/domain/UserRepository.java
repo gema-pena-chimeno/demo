@@ -28,11 +28,7 @@ public interface UserRepository extends JpaRepository<User, String> {
             nativeQuery = true)
     boolean isLastAdmin(@Param("id") String id, @Param("adminRole") String adminRole);
 
-    @Transactional(readOnly = true)
-    @Query(value =
-            "SELECT * " +
-                    "FROM users " +
-                    "WHERE user_name = :userName AND active = true ",
-            nativeQuery = true)
-    Optional<User> findByUserName(@Param("userName") String userName);
+    Optional<User> findByUserName(String userName);
+
+    Optional<User> findByUserNameAndActive(String userName, boolean active);
 }

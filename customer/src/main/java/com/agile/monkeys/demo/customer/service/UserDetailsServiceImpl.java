@@ -17,7 +17,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        com.agile.monkeys.demo.data.User user = userRepository.findByUserName(username);
+        com.agile.monkeys.demo.data.User user = userRepository
+                .findByUserNameAndActive(username, true)
+                .orElseThrow(() -> new NotFoundException("Log-in user not found"));
+
         return User
                 .withUsername(user.getUserName())
                 .password(passwordEncoder.encode(user.getPassword()))

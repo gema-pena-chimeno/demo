@@ -25,8 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        User user = userRepository.findByUserName(username)
-                .orElseThrow(() -> new NotFoundException("Logging user not found"));
+        User user = userRepository
+                .findByUserNameAndActive(username, true)
+                .orElseThrow(() -> new NotFoundException("Log-in user not found"));
 
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUserName())
