@@ -31,14 +31,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf()
-                    .disable()
-                .authorizeRequests()
+        // TODO: remove this!
+        http.csrf().disable();
+        http.authorizeRequests()
                     .antMatchers("/customer/**").hasAnyRole("USER_ROLE", "ADMIN_ROLE")
-                    .antMatchers("/" + urlPath + "/**").hasAnyRole("USER_ROLE", "ADMIN_ROLE")
-                .and()
-                .httpBasic();
+                    .antMatchers("/" + urlPath + "/**").hasAnyRole("USER_ROLE", "ADMIN_ROLE");
+        http.httpBasic();
+        http.headers().contentSecurityPolicy("script-src 'self'");
     }
 
     @Bean

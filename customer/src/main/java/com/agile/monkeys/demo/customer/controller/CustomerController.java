@@ -8,17 +8,23 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Api
 @RestController
 @RequestMapping("/customer")
 @AllArgsConstructor
+//@Validated
+@Validated
 public class CustomerController {
 
     private CustomerService customerService;
@@ -28,20 +34,23 @@ public class CustomerController {
             "  \"firstName\":\"string\",\n" +
             "  \"lastName\":\"string\"\n" +
             "}";
-    
+
+    // TODO: validate for XSS!
+    //TODO: add? @ApiParam(name = "dto", value = CRUD_DTO_FORMAT)
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomerDto create(@RequestParam(value = "photo", required = false) MultipartFile multipartFile,
-                              @RequestPart("dto") @ApiParam(name = "dto", value = CRUD_DTO_FORMAT) @Valid CRUDDto dto,
+                              @RequestPart("dto") @Valid CRUDDto dto,
                               Principal principal) {
 
         return customerService.create(dto, multipartFile, principal.getName());
     }
 
-    // How to make a difference between no image or ignore image...
+    // TODO: How to make a difference between no image or ignore image...
+    // TODO: add? @ApiParam(name = "dto", value = CRUD_DTO_FORMAT)
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomerDto update(@PathVariable(value = "id") String id,
                               @RequestParam(value = "photo", required = false) MultipartFile multipartFile,
-                              @RequestPart("dto") @ApiParam(name = "dto", value = CRUD_DTO_FORMAT) @Valid CRUDDto dto,
+                              @RequestPart("dto") @Valid CRUDDto dto,
                               Principal principal) {
 
         return customerService.update(id, dto, multipartFile, principal.getName());
@@ -71,5 +80,14 @@ public class CustomerController {
     @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<Object> handleNotFoundException(NotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getFieldErrors()
+                .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+        return errors;
     }
 }

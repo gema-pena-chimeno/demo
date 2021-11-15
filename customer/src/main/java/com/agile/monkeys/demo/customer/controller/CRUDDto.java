@@ -1,11 +1,12 @@
 package com.agile.monkeys.demo.customer.controller;
 
 import com.agile.monkeys.demo.data.Customer;
-//import com.agile.monkeys.demo.customer.domain.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import javax.validation.constraints.Pattern;
 
 @Data
 @ToString
@@ -13,7 +14,10 @@ import lombok.ToString;
 @NoArgsConstructor
 public class CRUDDto {
 
+    @Pattern(message="Type can contain alphabetical characters only", regexp = "[a-zA-Z ]+")
     private String firstName;
+
+    @Pattern(message="Type can contain alphabetical characters only", regexp = "[a-zA-Z ]+")
     private String lastName;
 
     public Customer toCustomer() {

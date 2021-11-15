@@ -1,0 +1,31 @@
+version: '2'
+
+services:
+  db:
+    container_name: demo-db
+    image: 'postgres:9.4'
+    env_file: ./.env
+    restart: unless-stopped
+    ports:
+      - $DB_DOCKER_PORT_MAPPING
+    environment:
+      - POSTGRES_DB=$POSTGRES_DB
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+  app:
+    depends_on:
+      - db
+    container_name: demo-user-app
+    image: 'docker-spring-boot-postgres:latest'
+    build:
+      context: .
+    env_file: ./.env
+    ports:
+      - $APP_DOCKER_PORT_MAPPING
+    volumes:
+      $HOME/.m2/:/root/.m2/
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/$POSTGRES_DB
+      - SPRING_DATASOURCE_USERNAME=$POSTGRES_USER
+      - SPRING_DATASOURCE_PASSWORD=$POSTGRES_PASSWORD
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=$SPRING_JPA_HIBERNATE_DDL_AUTO

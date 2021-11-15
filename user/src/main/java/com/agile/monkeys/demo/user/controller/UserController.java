@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 @AllArgsConstructor
+@Validated
 public class UserController {
 
     private UserService userService;
@@ -30,8 +32,9 @@ public class UserController {
                     "  \"role\":\"string\"\n" +
                     "}";
 
+    // TDDO: add? @ApiParam(name = "dto", value = CRUD_DTO_FORMAT)
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDto create(@RequestBody @ApiParam(name = "dto", value = CRUD_DTO_FORMAT) @Valid CRUDDto dto) {
+    public UserDto create(@Valid @RequestBody CRUDDto dto) {
 
         return userService.create(dto);
     }

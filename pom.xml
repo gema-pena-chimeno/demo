@@ -3,12 +3,20 @@
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.2</version>
-		<relativePath/>
-	</parent>
+<!--	<parent>-->
+<!--		<groupId>org.springframework.boot</groupId>-->
+<!--		<artifactId>spring-boot-starter-parent</artifactId>-->
+<!--		<version>2.5.2</version>-->
+<!--		<relativePath/>-->
+<!--	</parent>-->
+
+	    <parent>
+	        <artifactId>demo</artifactId>
+	        <groupId>com.agile.monkeys</groupId>
+	        <version>0.0.1-SNAPSHOT</version>
+<!--	        <relativePath>../pom.xml</relativePath>-->
+	    </parent>
+
 	<groupId>com.agile.monkeys</groupId>
 	<artifactId>demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -24,13 +32,14 @@
     </modules>
 
 	<properties>
-		<java.version>11</java.version>
-		<hibernate.version>5.2.12.Final</hibernate.version>
-		<hibernate-validator.version>5.3.6.Final</hibernate-validator.version>
-		<postgres.version>9.4.1212.jre7</postgres.version>
-		<testcontainers.version>1.16.0</testcontainers.version>
-		<maven.compiler.source>11</maven.compiler.source>
-		<maven.compiler.target>11</maven.compiler.target>
+<!--		<java.version>11</java.version>-->
+<!--		<maven.compiler.source>11</maven.compiler.source>-->
+<!--		<maven.compiler.target>11</maven.compiler.target>-->
+
+<!--		<hibernate.version>5.4.2.Final</hibernate.version>-->
+<!--		<hibernate-validator.version>5.3.6.Final</hibernate-validator.version>-->
+<!--		<postgres.version>42.2.5</postgres.version>-->
+<!--		<testcontainers.version>1.16.0</testcontainers.version>-->
 	</properties>
 
 	<dependencyManagement>
