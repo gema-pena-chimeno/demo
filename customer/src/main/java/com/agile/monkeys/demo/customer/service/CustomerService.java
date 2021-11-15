@@ -16,11 +16,11 @@ public interface CustomerService {
     List<CustomerDto> findAll();
 
     @Transactional
-    CustomerDto create(CRUDDto dto, MultipartFile multipartFile);
+    CustomerDto create(CRUDDto dto, MultipartFile multipartFile, String userName);
 
     @Transactional
-    CustomerDto update(String id, CRUDDto dto, MultipartFile multipartFile);
+    CustomerDto update(String id, CRUDDto dto, MultipartFile multipartFile, String userName);
 
     @Transactional
-    void delete(String id);
+    void delete(String id, String userName);
 }

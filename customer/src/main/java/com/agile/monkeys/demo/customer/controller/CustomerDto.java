@@ -1,7 +1,6 @@
 package com.agile.monkeys.demo.customer.controller;
 
 import com.agile.monkeys.demo.data.Customer;
-//import com.agile.monkeys.demo.customer.domain.Customer;
 import lombok.*;
 
 @Data

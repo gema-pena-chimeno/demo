@@ -54,13 +54,8 @@ public class Customer {
     @Version
     private Long version;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    // TODO:
-    //@JoinColumn(name = "created_by_user_id", nullable = false, updatable = false)
-    @JoinColumn(name = "created_by_user_id", updatable = false)
-    private User createdBy;
+    @Column(nullable = false, updatable = false)
+    private String createdBy;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "updated_by_user_id")
-    private User updateBy;
+    private String updateBy;
 }

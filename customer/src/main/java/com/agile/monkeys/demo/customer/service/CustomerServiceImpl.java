@@ -4,7 +4,6 @@ import com.agile.monkeys.demo.data.Customer;
 import com.agile.monkeys.demo.customer.controller.CRUDDto;
 import com.agile.monkeys.demo.customer.controller.CustomerDto;
 import com.agile.monkeys.demo.customer.domain.CustomerRepository;
-import com.agile.monkeys.demo.data.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -39,10 +38,11 @@ public class CustomerServiceImpl implements CustomerService {
                 .collect(Collectors.toList());
     }
 
-    public CustomerDto create(CRUDDto dto, MultipartFile multipartFile) {
+    public CustomerDto create(CRUDDto dto, MultipartFile multipartFile, String userName) {
         String fileName = getFilenameFromMultipartFile(multipartFile);
         Customer customer = dto.toCustomer();
         customer.setPhoto(fileName);
+        customer.setCreatedBy(userName);
 
         Customer created = customerRepository.save(customer);
         if (customer.getPhoto() != null) {
@@ -52,13 +52,14 @@ public class CustomerServiceImpl implements CustomerService {
         return toCustomerDto(created);
     }
 
-    public CustomerDto update(String id, CRUDDto dto, MultipartFile multipartFile) {
+    public CustomerDto update(String id, CRUDDto dto, MultipartFile multipartFile, String userName) {
         Customer customerFromDb = findCustomer(id);
 
         customerFromDb.setFirstName(dto.getFirstName());
         customerFromDb.setLastName(dto.getLastName());
         String fileName = getFilenameFromMultipartFile(multipartFile);
         customerFromDb.setPhoto(fileName);
+        customerFromDb.setUpdateBy(userName);
         Customer updated = customerRepository.save(customerFromDb);
 
         if (customerFromDb.getPhoto() != null) {
@@ -68,10 +69,11 @@ public class CustomerServiceImpl implements CustomerService {
         return toCustomerDto(updated);
     }
 
-    public void delete(String id) {
+    public void delete(String id, String userName) {
         Customer customer = findCustomer(id);
 
         customer.setActive(false);
+        customer.setUpdateBy(userName);
         customerRepository.delete(customer);
     }
 
@@ -96,7 +98,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer found = customerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Customer not found"));
 
-        if (found.isActive()) {
+        if (!found.isActive()) {
             throw new NotFoundException("Customer not found");
         }
 

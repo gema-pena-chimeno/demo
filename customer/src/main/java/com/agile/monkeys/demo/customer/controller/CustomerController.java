@@ -8,10 +8,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @Api
@@ -30,22 +32,25 @@ public class CustomerController {
     
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomerDto create(@RequestParam(value = "photo", required = false) MultipartFile multipartFile,
-                              @RequestPart("dto") @ApiParam(name = "dto", value = CRUD_DTO_FORMAT) @Valid CRUDDto dto) {
+                              @RequestPart("dto") @ApiParam(name = "dto", value = CRUD_DTO_FORMAT) @Valid CRUDDto dto,
+                              Principal principal) {
 
-        return customerService.create(dto, multipartFile);
+        return customerService.create(dto, multipartFile, principal.getName());
     }
 
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomerDto update(@PathVariable(value = "id") String id,
                        @RequestParam(value = "photo", required = false) MultipartFile multipartFile,
-                       @RequestPart("dto") @ApiParam(name = "dto", value = CRUD_DTO_FORMAT) @Valid CRUDDto dto) {
+                       @RequestPart("dto") @ApiParam(name = "dto", value = CRUD_DTO_FORMAT) @Valid CRUDDto dto,
+                              Principal principal) {
 
-        return customerService.update(id, dto, multipartFile);
+        return customerService.update(id, dto, multipartFile, principal.getName());
     }
 
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)        // or use @DeleteMapping
-    public void delete(@PathVariable("id") String id){
-        customerService.delete(id);
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void delete(@PathVariable("id") String id,
+                       Principal principal) {
+        customerService.delete(id, principal.getName());
     }
 
     @GetMapping(path = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -65,6 +70,6 @@ public class CustomerController {
 
     @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<Object> handleNotFoundException(NotFoundException e) {
-        return new ResponseEntity<>("Customer not found", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

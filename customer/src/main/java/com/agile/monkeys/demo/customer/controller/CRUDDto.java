@@ -20,6 +20,7 @@ public class CRUDDto {
         Customer customer = new Customer();
         customer.setFirstName(this.firstName);
         customer.setLastName(this.lastName);
+        customer.setActive(true);
 
         return customer;
     }
