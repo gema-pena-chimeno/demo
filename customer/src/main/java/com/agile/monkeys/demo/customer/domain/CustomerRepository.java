@@ -14,7 +14,7 @@ public interface CustomerRepository extends JpaRepository<Customer, String> {
     @Query(value =
             "select * " +
             "from customer c " +
-            "where c.first_name ilike :query or c.last_name ilike :query " +
+            "where c.active = true and (c.first_name ilike :query or c.last_name ilike :query) " +
             "order by c.last_name asc",
             nativeQuery = true)
     List<Customer> findByQuery(@Param("query") String query);

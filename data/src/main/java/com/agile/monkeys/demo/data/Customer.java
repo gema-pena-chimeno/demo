@@ -14,6 +14,7 @@ import java.time.OffsetDateTime;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "\"customers\"")
 public class Customer {
 
     @Id
@@ -34,6 +35,9 @@ public class Customer {
     @Column
     private String photo;
 
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private boolean active;
+
     @Column(updatable = false)
     @CreationTimestamp
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -50,13 +54,13 @@ public class Customer {
     @Version
     private Long version;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    // TODO:
-//    //@JoinColumn(name = "created_by_user_id", nullable = false, updatable = false)
-//    @JoinColumn(name = "created_by_user_id", updatable = false)
-//    private User createdBy;
-//
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "updated_by_user_id")
-//    private User updateBy;
+    @ManyToOne(fetch = FetchType.LAZY)
+    // TODO:
+    //@JoinColumn(name = "created_by_user_id", nullable = false, updatable = false)
+    @JoinColumn(name = "created_by_user_id", updatable = false)
+    private User createdBy;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "updated_by_user_id")
+    private User updateBy;
 }

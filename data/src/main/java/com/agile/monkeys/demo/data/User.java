@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "\"User\"")
+@Table(name = "\"users\"")
 public class User {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -25,7 +25,7 @@ public class User {
     @Column(name = "id", updatable = false, nullable = false)
     private String id;
 
-    @Column(name = "userName", nullable = false, unique = true)
+    @Column(name = "userName", nullable = false, updatable = false, unique = true)
     private String userName;
 
     @Column(name = "password", nullable = false)
@@ -33,6 +33,9 @@ public class User {
 
     @Column(name = "role", nullable = false)
     private String role;
+
+    @Column( nullable = false, columnDefinition = "boolean default true")
+    private boolean active;
 
     @Column(updatable = false)
     @CreationTimestamp

@@ -4,6 +4,7 @@ import com.agile.monkeys.demo.data.Customer;
 import com.agile.monkeys.demo.customer.controller.CRUDDto;
 import com.agile.monkeys.demo.customer.controller.CustomerDto;
 import com.agile.monkeys.demo.customer.domain.CustomerRepository;
+import com.agile.monkeys.demo.data.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -20,14 +21,13 @@ public class CustomerServiceImpl implements CustomerService {
     private FileUploadService fileUploadService;
 
     public CustomerDto findById(String id) {
-        Customer found = customerRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Customer not found"));
-        return toCustomerDto(found);
+        return toCustomerDto(findCustomer(id));
     }
 
     public List<CustomerDto> findAll() {
         return customerRepository.findAll()
                 .stream()
+                .filter(Customer::isActive)
                 .map(this::toCustomerDto)
                 .collect(Collectors.toList());
     }
@@ -53,8 +53,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     public CustomerDto update(String id, CRUDDto dto, MultipartFile multipartFile) {
-        Customer customerFromDb = customerRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Customer not found"));
+        Customer customerFromDb = findCustomer(id);
 
         customerFromDb.setFirstName(dto.getFirstName());
         customerFromDb.setLastName(dto.getLastName());
@@ -70,8 +69,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     public void delete(String id) {
-        Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Customer not found"));
+        Customer customer = findCustomer(id);
+
+        customer.setActive(false);
         customerRepository.delete(customer);
     }
 
@@ -90,6 +90,17 @@ public class CustomerServiceImpl implements CustomerService {
             return null;
         }
         return fileUploadService.getPhotoUrl(customer.getId(), customer.getPhoto());
+    }
+
+    private Customer findCustomer(String id) {
+        Customer found = customerRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Customer not found"));
+
+        if (found.isActive()) {
+            throw new NotFoundException("Customer not found");
+        }
+
+        return found;
     }
 
 }

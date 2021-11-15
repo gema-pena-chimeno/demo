@@ -1,6 +1,6 @@
 spring:
   application:
-    name: demo-customer
+    name: demo-user
   profiles:
     active: ${ENVIRONMENT:development}
   datasource:
@@ -17,15 +17,9 @@ spring:
           lob:
             non_contextual_creation: true  #stops angry clob error on startup
     database-platform: org.hibernate.dialect.PostgreSQL94Dialect
-    generate-ddl: false
     hibernate:
-      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO} # none, update
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO} # none, update, create, create-drop, validate
     open-in-view: false
-
-customer:
-  image:
-    image_folder: ${IMAGE_FOLDER}
-    url_path: ${URL_PATH}
 
 hibernate:
   jdbc:
@@ -33,7 +27,7 @@ hibernate:
       non_contextual_creation: true #stops angry clob error on startup
 
 server:
-  port: 8081
+  port: 8082
   compression:
     enabled: true
     mime-types:

@@ -21,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return User
                 .withUsername(user.getUserName())
                 .password(passwordEncoder.encode(user.getPassword()))
-                .roles(user.getRole())
+                .roles(user.getRole().toString())
                 .build();
     }
 }

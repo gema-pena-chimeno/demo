@@ -1,6 +1,7 @@
 package com.agile.monkeys.demo.user.controller;
 
 import com.agile.monkeys.demo.data.User;
+import com.agile.monkeys.demo.data.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,11 +17,11 @@ public class UserDto {
 
     private String userName;
 
-    private String password;
+    private UserRole role;
 
     public UserDto(User user) {
         this.id = user.getId();
         this.userName = user.getUserName();
-        this.password = user.getPassword();
+        this.role = UserRole.valueOf(user.getRole());
     }
 }
