@@ -1,6 +1,6 @@
-package com.agile.monkeys.demo.customer.config;
+package com.agile.monkeys.demo.user.config;
 
-import com.agile.monkeys.demo.customer.service.UserDetailsServiceImpl;
+import com.agile.monkeys.demo.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    public UserDetailsServiceImpl userDetailsService;
+    public UserService userDetailsService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                     .disable()
                 .authorizeRequests()
-                    .antMatchers("/customer/**").hasAnyRole("USER_ROLE", "ADMIN_ROLE")
+                    .antMatchers("/user/**").hasRole("ADMIN_ROLE")
                 .and()
                 .httpBasic();
     }
@@ -38,4 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
+

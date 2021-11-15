@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, String> {
     @Transactional(readOnly = true)
@@ -26,4 +27,12 @@ public interface UserRepository extends JpaRepository<User, String> {
             "where active = true and role = :adminRole and id <> :id",
             nativeQuery = true)
     boolean isLastAdmin(@Param("id") String id, @Param("adminRole") String adminRole);
+
+    @Transactional(readOnly = true)
+    @Query(value =
+            "SELECT * " +
+                    "FROM users " +
+                    "WHERE user_name = :userName AND active = true ",
+            nativeQuery = true)
+    Optional<User> findByUserName(@Param("userName") String userName);
 }

@@ -3,12 +3,12 @@ package com.agile.monkeys.demo.user.service;
 import com.agile.monkeys.demo.data.UserRole;
 import com.agile.monkeys.demo.user.controller.CRUDDto;
 import com.agile.monkeys.demo.user.controller.UserDto;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-import javax.transaction.TransactionScoped;
 import javax.transaction.Transactional;
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
 
     UserDto findById(String id);
 

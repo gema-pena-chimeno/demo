@@ -7,6 +7,9 @@ import com.agile.monkeys.demo.user.controller.UserDto;
 import com.agile.monkeys.demo.user.domain.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +21,19 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        User user = userRepository.findByUserName(username)
+                .orElseThrow(() -> new NotFoundException("Logging user not found"));
+
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getUserName())
+                .password(passwordEncoder.encode(user.getPassword()))
+                .roles(user.getRole().toString())
+                .build();
+    }
 
     public UserDto findById(String id) {
         return toUserDto(findUser(id));
