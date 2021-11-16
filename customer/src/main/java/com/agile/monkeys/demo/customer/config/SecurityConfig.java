@@ -31,6 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // TODO: remove this?
+        http.csrf().disable();
         http.authorizeRequests()
                     .antMatchers("/customer/**").hasAnyRole("USER_ROLE", "ADMIN_ROLE")
                     .antMatchers("/" + urlPath + "/**").hasAnyRole("USER_ROLE", "ADMIN_ROLE");

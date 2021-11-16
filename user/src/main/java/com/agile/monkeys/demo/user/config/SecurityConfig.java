@@ -25,6 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // TODO: remove?
+        http.csrf().disable();
         http.authorizeRequests().antMatchers("/user/**").hasRole("ADMIN_ROLE");
         http.httpBasic();
     }

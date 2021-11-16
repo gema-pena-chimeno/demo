@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,7 +21,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/customer")
 @AllArgsConstructor
-//@Validated
 public class CustomerController {
 
     private CustomerService customerService;
@@ -33,21 +31,19 @@ public class CustomerController {
             "  \"lastName\":\"string\"\n" +
             "}";
 
-    //TODO: validate for XSS!
     //TODO: add? @ApiParam(name = "dto", value = CRUD_DTO_FORMAT)
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public CustomerDto create(@RequestParam(value = "photo", required = false) MultipartFile multipartFile,
+    public CustomerDto create(@RequestParam(value = "photo", required = false) @ValidImageFile MultipartFile multipartFile,
                               @RequestPart("dto") @Valid CreateDto dto,
                               Principal principal) {
 
         return customerService.create(dto, multipartFile, principal.getName());
     }
 
-    // TODO: How to make a difference between no image or ignore image...
     // TODO: add? @ApiParam(name = "dto", value = CRUD_DTO_FORMAT)
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomerDto update(@PathVariable(value = "id") String id,
-                              @RequestParam(value = "photo", required = false) MultipartFile multipartFile,
+                              @RequestParam(value = "photo", required = false) @ValidImageFile MultipartFile multipartFile,
                               @RequestPart("dto") @Valid UpdateDto dto,
                               Principal principal) {
 

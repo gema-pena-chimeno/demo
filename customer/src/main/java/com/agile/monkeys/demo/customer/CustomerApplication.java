@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories("com.agile.monkeys.demo.customer.domain")
 public class CustomerApplication {
     public static void main(String[] args) {
+
         SpringApplication.run(CustomerApplication.class, args);
     }
 }
