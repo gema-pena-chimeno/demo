@@ -80,7 +80,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         customer.setActive(false);
         customer.setUpdateBy(userName);
-        customerRepository.delete(customer);
+        customerRepository.save(customer);
     }
 
     private String getFilenameFromMultipartFile(MultipartFile multipartFile) {

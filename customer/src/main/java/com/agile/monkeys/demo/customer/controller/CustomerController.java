@@ -51,8 +51,7 @@ public class CustomerController {
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void delete(@PathVariable("id") String id,
-                       Principal principal) {
+    public void delete(@PathVariable("id") String id, Principal principal) {
         customerService.delete(id, principal.getName());
     }
 

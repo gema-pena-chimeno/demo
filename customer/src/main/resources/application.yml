@@ -93,6 +93,14 @@ spring:
     activate:
       on-profile: test
   datasource:
-    url: jdbc:postgresql://localhost:5432/test
-    username: test
-    password: test
+    url: jdbc:postgresql://localhost:5432/customer_db_test
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+customer:
+  image:
+    image_folder: ./
+    url_path: /image-data

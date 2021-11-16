@@ -24,6 +24,7 @@ services:
       - $APP_DOCKER_PORT_MAPPING
     volumes:
       - image-data:$IMAGE_FOLDER
+      - $HOME/.m2/repository:/root/.m2/repository
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/$POSTGRES_DB
       - SPRING_DATASOURCE_USERNAME=$POSTGRES_USER
