@@ -3,7 +3,6 @@ package com.agile.monkeys.demo.customer.controller;
 import com.agile.monkeys.demo.customer.service.CustomerService;
 import com.agile.monkeys.demo.customer.service.NotFoundException;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,7 +23,6 @@ import java.util.Map;
 @RequestMapping("/customer")
 @AllArgsConstructor
 //@Validated
-@Validated
 public class CustomerController {
 
     private CustomerService customerService;
@@ -35,11 +33,11 @@ public class CustomerController {
             "  \"lastName\":\"string\"\n" +
             "}";
 
-    // TODO: validate for XSS!
+    //TODO: validate for XSS!
     //TODO: add? @ApiParam(name = "dto", value = CRUD_DTO_FORMAT)
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomerDto create(@RequestParam(value = "photo", required = false) MultipartFile multipartFile,
-                              @RequestPart("dto") @Valid CRUDDto dto,
+                              @RequestPart("dto") @Valid CreateDto dto,
                               Principal principal) {
 
         return customerService.create(dto, multipartFile, principal.getName());
@@ -50,7 +48,7 @@ public class CustomerController {
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomerDto update(@PathVariable(value = "id") String id,
                               @RequestParam(value = "photo", required = false) MultipartFile multipartFile,
-                              @RequestPart("dto") @Valid CRUDDto dto,
+                              @RequestPart("dto") @Valid UpdateDto dto,
                               Principal principal) {
 
         return customerService.update(id, dto, multipartFile, principal.getName());

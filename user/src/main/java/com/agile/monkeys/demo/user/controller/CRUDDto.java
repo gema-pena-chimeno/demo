@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Data
@@ -15,13 +16,15 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 public class CRUDDto {
 
-    @Pattern(message="Username can contain alphanumeric characters only", regexp = "[a-zA-Z0-9 ]+")
+    @NotBlank
+    @Pattern(message="it can contain alphanumeric characters only", regexp = "[a-zA-Z0-9 ]+")
     private String userName;
 
-    @Pattern(message="Password must be secure enough", regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&\\(\\)\\{\\}\\[\\]:;<>,.?/~_+-=|]).{8,32}$")
+    @NotBlank
+    @Pattern(message="it must be secure enough", regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&\\(\\)\\{\\}\\[\\]:;<>,.?/~_+-=|]).{8,32}$")
     private String password;
 
-    @Pattern(message="Invalid values in role", regexp = "(USER_ROLE|ADMIN_ROLE)")
+    //@Pattern(message="it must be a supported role", regexp = "(USER_ROLE|ADMIN_ROLE)")
     private UserRole role;
 
     public User toUser() {

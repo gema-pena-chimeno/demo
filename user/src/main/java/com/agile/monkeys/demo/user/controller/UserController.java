@@ -10,17 +10,18 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Api
 @RestController
 @RequestMapping("/user")
 @AllArgsConstructor
-@Validated
 public class UserController {
 
     private UserService userService;
@@ -34,14 +35,15 @@ public class UserController {
 
     // TDDO: add? @ApiParam(name = "dto", value = CRUD_DTO_FORMAT)
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDto create(@Valid @RequestBody CRUDDto dto) {
+    public UserDto create(@RequestBody @Valid CRUDDto dto) {
 
         return userService.create(dto);
     }
 
+    // TODO: @ApiParam(name = "dto", value = CRUD_DTO_FORMAT)
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDto update(@PathVariable(value = "id") String id,
-                          @RequestBody @ApiParam(name = "dto", value = CRUD_DTO_FORMAT) @Valid CRUDDto dto) {
+                          @RequestBody @Valid CRUDDto dto) {
 
         return userService.update(id, dto);
     }
@@ -81,5 +83,14 @@ public class UserController {
     @ExceptionHandler({LastAdminException.class})
     public ResponseEntity<Object> handleNotFoundException(LastAdminException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getFieldErrors()
+                .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+        return errors;
     }
 }

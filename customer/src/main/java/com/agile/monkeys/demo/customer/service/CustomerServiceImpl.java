@@ -1,7 +1,8 @@
 package com.agile.monkeys.demo.customer.service;
 
+import com.agile.monkeys.demo.customer.controller.UpdateDto;
 import com.agile.monkeys.demo.data.Customer;
-import com.agile.monkeys.demo.customer.controller.CRUDDto;
+import com.agile.monkeys.demo.customer.controller.CreateDto;
 import com.agile.monkeys.demo.customer.controller.CustomerDto;
 import com.agile.monkeys.demo.customer.domain.CustomerRepository;
 import lombok.AllArgsConstructor;
@@ -38,7 +39,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .collect(Collectors.toList());
     }
 
-    public CustomerDto create(CRUDDto dto, MultipartFile multipartFile, String userName) {
+    public CustomerDto create(CreateDto dto, MultipartFile multipartFile, String userName) {
         String fileName = getFilenameFromMultipartFile(multipartFile);
         Customer customer = dto.toCustomer();
         customer.setPhoto(fileName);
@@ -52,17 +53,22 @@ public class CustomerServiceImpl implements CustomerService {
         return toCustomerDto(created);
     }
 
-    public CustomerDto update(String id, CRUDDto dto, MultipartFile multipartFile, String userName) {
+    public CustomerDto update(String id, UpdateDto dto, MultipartFile multipartFile, String userName) {
         Customer customerFromDb = findCustomer(id);
 
         customerFromDb.setFirstName(dto.getFirstName());
         customerFromDb.setLastName(dto.getLastName());
-        String fileName = getFilenameFromMultipartFile(multipartFile);
-        customerFromDb.setPhoto(fileName);
         customerFromDb.setUpdateBy(userName);
+
+        String fileName = null;
+        if (!dto.isIgnoreFile()) {
+            fileName = getFilenameFromMultipartFile(multipartFile);
+            customerFromDb.setPhoto(fileName);
+        }
+
         Customer updated = customerRepository.save(customerFromDb);
 
-        if (customerFromDb.getPhoto() != null) {
+        if (fileName != null) {
             fileUploadService.saveFile(updated.getId(), fileName, multipartFile);
         }
 
@@ -105,4 +111,7 @@ public class CustomerServiceImpl implements CustomerService {
         return found;
     }
 
+    private boolean fileNotAvailable(MultipartFile multipartFile) {
+        return multipartFile == null || multipartFile.isEmpty();
+    }
 }

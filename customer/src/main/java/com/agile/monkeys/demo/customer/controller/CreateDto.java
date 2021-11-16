@@ -6,18 +6,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Data
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class CRUDDto {
+public class CreateDto {
 
-    @Pattern(message="Type can contain alphabetical characters only", regexp = "[a-zA-Z ]+")
+    @NotBlank
+    @Pattern(message="it can contain only alphabetical characters", regexp = "[a-zA-Z ]+")
     private String firstName;
 
-    @Pattern(message="Type can contain alphabetical characters only", regexp = "[a-zA-Z ]+")
+    @NotBlank
+    @Pattern(message="it can contain only alphabetical characters", regexp = "[a-zA-Z ]+")
     private String lastName;
 
     public Customer toCustomer() {
