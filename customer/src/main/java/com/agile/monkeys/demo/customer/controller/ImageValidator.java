@@ -20,7 +20,7 @@ public class ImageValidator implements ConstraintValidator<ValidImageFile, Multi
     @Override
     public boolean isValid(MultipartFile file, ConstraintValidatorContext context) {
 
-        if (file.isEmpty() || file.getSize()==0) {
+        if (file == null || file.isEmpty() || file.getSize()==0) {
             return true;
         }
 

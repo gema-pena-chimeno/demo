@@ -10,7 +10,6 @@ import com.agile.monkeys.demo.customer.utils.ResourceUtils;
 import com.agile.monkeys.demo.data.Customer;
 import org.apache.commons.compress.utils.IOUtils;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,7 +18,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 
 import java.io.*;
 import java.security.Principal;
@@ -45,17 +43,9 @@ public class CustomerAPiIT extends SpringBase {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
     // These values are the same that the values set in application.yml in the profile test
     private static final String URL_PATH = "/image-data";
     private static final String IMAGE_FOLDER = "./";
-
-    @BeforeAll
-    public void init() {
-        configureUsers();
-    }
 
     @Test
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
@@ -371,11 +361,6 @@ public class CustomerAPiIT extends SpringBase {
 
         List<CustomerDto> result4 = customerController.search("Smi");
         assertEquals(1, result4.size());
-    }
-
-    private void configureUsers() {
-        String query = ResourceUtils.loadAsString("sql_scripts/insert_users.sql");
-        jdbcTemplate.execute(query);
     }
 
     private CreateDto generateCreateDto(String firstName, String lastName) {
