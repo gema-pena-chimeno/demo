@@ -90,7 +90,7 @@ spring:
     activate:
       on-profile: test
   datasource:
-    url: jdbc:postgresql://localhost:5432/customer_db_test
+    url: jdbc:postgresql://localhost:5432/demo_db_test
     username: postgres
     password: postgres
   jpa:

@@ -27,7 +27,7 @@ public abstract class SpringBase {
 
     @ClassRule
     public static PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:9.6.11")
-            .withDatabaseName("customer_db_test")
+            .withDatabaseName("demo_db_test")
             .withUsername("postgres")
             .withPassword("postgres");
 
