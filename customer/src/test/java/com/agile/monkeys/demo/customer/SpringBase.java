@@ -41,5 +41,4 @@ public abstract class SpringBase {
                     .addFirst(new MapPropertySource("databaseProperties", propertyMap));
         }
     }
-
 }

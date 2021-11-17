@@ -1,23 +1,21 @@
-package com.agile.monkeys.demo.customer;
+package com.agile.monkeys.demo.customer.controller;
 
-import com.agile.monkeys.demo.customer.controller.CreateDto;
-import com.agile.monkeys.demo.customer.controller.CustomerController;
-import com.agile.monkeys.demo.customer.controller.CustomerDto;
-import com.agile.monkeys.demo.customer.controller.UpdateDto;
+import com.agile.monkeys.demo.customer.SpringBase;
 import com.agile.monkeys.demo.customer.domain.CustomerRepository;
 import com.agile.monkeys.demo.customer.service.NotFoundException;
 import com.agile.monkeys.demo.customer.utils.ResourceUtils;
 import com.agile.monkeys.demo.data.Customer;
 import org.apache.commons.compress.utils.IOUtils;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.testcontainers.shaded.org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.security.Principal;
@@ -35,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * - Format validation on the parameters of the REST API.
  */
 @RunWith(SpringRunner.class)
-public class CustomerAPiIT extends SpringBase {
+public class CustomerControllerIntTest extends SpringBase {
 
     @Autowired
     private CustomerController customerController;
@@ -45,7 +43,17 @@ public class CustomerAPiIT extends SpringBase {
 
     // These values are the same that the values set in application.yml in the profile test
     private static final String URL_PATH = "/image-data";
-    private static final String IMAGE_FOLDER = "./";
+    private static final String IMAGE_FOLDER = "./tmp_test/";
+
+    @After
+    public void cleanImageFolder() throws IOException {
+        File tmpFolder = new File(IMAGE_FOLDER);
+        if (tmpFolder.exists()) {
+            for (File folder: tmpFolder.listFiles()) {
+                FileUtils.deleteDirectory(folder);
+            }
+        }
+    }
 
     @Test
     @Transactional(propagation = Propagation.NOT_SUPPORTED)

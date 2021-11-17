@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
-public class UserDetailsServiceImplIT extends SpringBase {
+public class UserDetailsServiceImplIntTest extends SpringBase {
 
     @Autowired
     private UserDetailsService userDetailsService;

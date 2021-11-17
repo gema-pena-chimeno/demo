@@ -102,5 +102,5 @@ spring:
 
 customer:
   image:
-    image_folder: ./
+    image_folder: ./tmp_test/
     url_path: /image-data
