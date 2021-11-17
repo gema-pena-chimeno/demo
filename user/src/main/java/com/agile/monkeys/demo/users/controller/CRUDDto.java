@@ -24,7 +24,7 @@ public class CRUDDto {
     @Pattern(message="it must be secure enough", regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&\\(\\)\\{\\}\\[\\]:;<>,.?/~_+-=|]).{8,32}$")
     private String password;
 
-    //@Pattern(message="it must be a supported role", regexp = "(USER_ROLE|ADMIN_ROLE)")
+    // @Pattern not needed because of the conversion to UserRole.
     private UserRole role;
 
     public UserInfo toUser() {

@@ -13,6 +13,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static com.agile.monkeys.demo.data.UserRole.ADMIN;
+import static com.agile.monkeys.demo.data.UserRole.USER;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -34,8 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // TODO: remove this?
         http.csrf().disable();
         http.authorizeRequests()
-                    .antMatchers("/customer/**").hasAnyRole("USER_ROLE", "ADMIN_ROLE")
-                    .antMatchers("/" + urlPath + "/**").hasAnyRole("USER_ROLE", "ADMIN_ROLE");
+                    .antMatchers("/customer/**").hasAnyRole(USER.toString(), ADMIN.toString())
+                    .antMatchers("/" + urlPath + "/**").hasAnyRole(USER.toString(), ADMIN.toString());
         http.httpBasic();
         http.headers().contentSecurityPolicy("script-src 'self'");
     }

@@ -28,7 +28,5 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, String> {
             nativeQuery = true)
     boolean isLastAdmin(@Param("id") String id, @Param("adminRole") String adminRole);
 
-    Optional<UserInfo> findByUserName(String userName);
-
     Optional<UserInfo> findByUserNameAndActive(String userName, boolean active);
 }

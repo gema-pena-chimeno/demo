@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static com.agile.monkeys.demo.data.UserRole.ADMIN;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -27,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // TODO: remove?
         http.csrf().disable();
-        http.authorizeRequests().antMatchers("/user/**").hasRole("ADMIN_ROLE");
+        http.authorizeRequests().antMatchers("/user/**").hasRole(ADMIN.toString());
         http.httpBasic();
     }
 
