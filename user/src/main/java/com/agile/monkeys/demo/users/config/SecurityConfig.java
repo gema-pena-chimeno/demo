@@ -1,6 +1,6 @@
-package com.agile.monkeys.demo.user.config;
+package com.agile.monkeys.demo.users.config;
 
-import com.agile.monkeys.demo.user.service.UserService;
+import com.agile.monkeys.demo.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

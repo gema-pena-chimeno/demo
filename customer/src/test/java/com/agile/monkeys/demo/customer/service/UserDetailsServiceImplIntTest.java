@@ -44,7 +44,7 @@ public class UserDetailsServiceImplIntTest extends SpringBase {
         // then
         // TODO: change role names?
         assertEquals( "admin", result.getUsername());
-        assertEquals(List.of("ROLE_ADMIN_ROLE"), result.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+        assertEquals(List.of("ROLE_ADMIN"), result.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
     }
 
     @Test
@@ -56,7 +56,7 @@ public class UserDetailsServiceImplIntTest extends SpringBase {
 
         // then
         assertEquals("user_active", result.getUsername());
-        assertEquals(List.of("ROLE_USER_ROLE"), result.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+        assertEquals(List.of("ROLE_USER"), result.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
     }
 
     @Test

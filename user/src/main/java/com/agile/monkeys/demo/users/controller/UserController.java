@@ -1,11 +1,10 @@
-package com.agile.monkeys.demo.user.controller;
+package com.agile.monkeys.demo.users.controller;
 
 import com.agile.monkeys.demo.data.UserRole;
-import com.agile.monkeys.demo.user.service.LastAdminException;
-import com.agile.monkeys.demo.user.service.NotFoundException;
-import com.agile.monkeys.demo.user.service.UserService;
+import com.agile.monkeys.demo.users.service.LastAdminException;
+import com.agile.monkeys.demo.users.service.NotFoundException;
+import com.agile.monkeys.demo.users.service.UserService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -66,7 +65,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDto getCustomer(@PathVariable("id") String id) {
+    public UserDto getUser(@PathVariable("id") String id) {
         return userService.findById(id);
     }
 

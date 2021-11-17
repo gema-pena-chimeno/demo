@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @ComponentScan(basePackages={"com.agile.monkeys.demo"})
-//@EnableTransactionManagement
 @EntityScan(basePackages="com.agile.monkeys.demo.data")
 @EnableJpaRepositories("com.agile.monkeys.demo.customer.domain")
 public class CustomerApplication {

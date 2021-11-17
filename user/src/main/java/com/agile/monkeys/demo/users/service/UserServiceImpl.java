@@ -1,38 +1,41 @@
-package com.agile.monkeys.demo.user.service;
+package com.agile.monkeys.demo.users.service;
 
-import com.agile.monkeys.demo.data.User;
+import com.agile.monkeys.demo.data.UserInfo;
 import com.agile.monkeys.demo.data.UserRole;
-import com.agile.monkeys.demo.user.controller.CRUDDto;
-import com.agile.monkeys.demo.user.controller.UserDto;
-import com.agile.monkeys.demo.user.domain.UserRepository;
+import com.agile.monkeys.demo.users.controller.CRUDDto;
+import com.agile.monkeys.demo.users.controller.UserDto;
+import com.agile.monkeys.demo.users.domain.UserInfoRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.agile.monkeys.demo.data.UserRole.ADMIN;
+import static com.agile.monkeys.demo.data.UserRole.USER;
+
 @Slf4j
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    UserRepository userRepository;
+    private UserInfoRepository userInfoRepository;
     private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        User user = userRepository
+        UserInfo userInfo = userInfoRepository
                 .findByUserNameAndActive(username, true)
                 .orElseThrow(() -> new NotFoundException("Log-in user not found"));
 
         return org.springframework.security.core.userdetails.User
-                .withUsername(user.getUserName())
-                .password(passwordEncoder.encode(user.getPassword()))
-                .roles(user.getRole().toString())
+                .withUsername(userInfo.getUserName())
+                .password(passwordEncoder.encode(userInfo.getPassword()))
+                .roles(userInfo.getRole().toString())
                 .build();
     }
 
@@ -41,70 +44,70 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<UserDto> findByQuery(String query) {
-        return userRepository.findByQuery(query + "%")
+        return userInfoRepository.findByQuery("%" + query + "%")
                 .stream()
                 .map(this::toUserDto)
                 .collect(Collectors.toList());
     }
 
     public List<UserDto> findAll() {
-        return userRepository.findAll()
+        return userInfoRepository.findAll()
                 .stream()
-                .filter(User::isActive)
+                .filter(UserInfo::isActive)
                 .map(this::toUserDto)
                 .collect(Collectors.toList());
     }
 
     public UserDto create(CRUDDto dto) {
-        User created = userRepository.save(dto.toUser());
+        UserInfo created = userInfoRepository.save(dto.toUser());
 
         return toUserDto(created);
     }
 
     public UserDto update(String id, CRUDDto dto) {
-        User userFromDb = findUser(id);
+        UserInfo userInfoFromDb = findUser(id);
 
         validateLastAdmin(id, dto.getRole());
 
-        if (!userFromDb.getUserName().equals(dto.getUserName())) {
+        if (!userInfoFromDb.getUserName().equals(dto.getUserName())) {
             log.info("Change of user name ignored. Field not updatable.");
         }
-        userFromDb.setPassword(dto.getPassword());
-        userFromDb.setRole(dto.getRole().toString());
-        User updated = userRepository.save(userFromDb);
+        userInfoFromDb.setPassword(dto.getPassword());
+        userInfoFromDb.setRole(dto.getRole().toString());
+        UserInfo updated = userInfoRepository.save(userInfoFromDb);
 
         return toUserDto(updated);
     }
 
     public UserDto updateRole(String id, UserRole role) {
-        User userFromDb = findUser(id);
+        UserInfo userInfoFromDb = findUser(id);
 
-        if (!userFromDb.getRole().equals(role)) {
+        if (userInfoFromDb.getRole().equals(role.toString())) {
             log.debug("Changes of role ignored. Role already set.");
-            return toUserDto(userFromDb);
+            return toUserDto(userInfoFromDb);
         }
 
         validateLastAdmin(id, role);
 
-        userFromDb.setRole(role.toString());
-        User updated = userRepository.save(userFromDb);
+        userInfoFromDb.setRole(role.toString());
+        UserInfo updated = userInfoRepository.save(userInfoFromDb);
 
         return toUserDto(updated);
     }
 
     public void delete(String id) {
-        User user = findUser(id);
+        UserInfo userInfo = findUser(id);
 
-        user.setActive(false);
-        userRepository.save(user);
+        userInfo.setActive(false);
+        userInfoRepository.save(userInfo);
     }
 
-    private UserDto toUserDto(User user) {
-        return new UserDto(user);
+    private UserDto toUserDto(UserInfo userInfo) {
+        return new UserDto(userInfo);
     }
 
-    private User findUser(String id) {
-        User found = userRepository.findById(id)
+    private UserInfo findUser(String id) {
+        UserInfo found = userInfoRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("User not found"));
 
         if (!found.isActive()) {
@@ -115,7 +118,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void validateLastAdmin(String id, UserRole role) {
-        if (role.equals(UserRole.USER_ROLE) && userRepository.isLastAdmin(id, UserRole.ADMIN_ROLE.toString())) {
+        if (role.equals(USER) && userInfoRepository.isLastAdmin(id, ADMIN.toString())) {
             throw new LastAdminException("Role cannot be change. At least one admin should exist");
         }
     }

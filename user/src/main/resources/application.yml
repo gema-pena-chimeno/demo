@@ -20,6 +20,9 @@ spring:
     hibernate:
       ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO} # none, update, create, create-drop, validate
     open-in-view: false
+  sql:
+    init:
+      mode: always
 
 hibernate:
   jdbc:
@@ -87,6 +90,9 @@ spring:
     activate:
       on-profile: test
   datasource:
-    url: jdbc:postgresql://localhost:5432/test
-    username: test
-    password: test
+    url: jdbc:postgresql://localhost:5432/customer_db_test
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop

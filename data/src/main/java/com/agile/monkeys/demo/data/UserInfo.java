@@ -1,4 +1,4 @@
-package com.agile.monkeys.demo.user.domain;
+package com.agile.monkeys.demo.data;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
@@ -7,25 +7,34 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 
 @Data
 @ToString
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
-public class User {
-
+public class UserInfo {
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false)
+    private String id;
 
-    @NotNull
+    @Column(name = "userName", nullable = false, updatable = false, unique = true)
     private String userName;
 
-    @NotNull
+    @Column(name = "password", nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private String role;
+
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private boolean active;
 
     @Column(updatable = false)
     @CreationTimestamp
@@ -39,13 +48,7 @@ public class User {
     @Setter(AccessLevel.NONE)
     private OffsetDateTime lastUpdated;
 
-    @Column
+    @Column(nullable = false)
     @Version
     private Long version;
-
-    // TODO: remove?
-    public User(String userName, String password) {
-        this.userName = userName;
-        this.password = password;
-    }
 }

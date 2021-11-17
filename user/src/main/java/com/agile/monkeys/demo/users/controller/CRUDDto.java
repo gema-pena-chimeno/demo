@@ -1,6 +1,6 @@
-package com.agile.monkeys.demo.user.controller;
+package com.agile.monkeys.demo.users.controller;
 
-import com.agile.monkeys.demo.data.User;
+import com.agile.monkeys.demo.data.UserInfo;
 import com.agile.monkeys.demo.data.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,13 +27,13 @@ public class CRUDDto {
     //@Pattern(message="it must be a supported role", regexp = "(USER_ROLE|ADMIN_ROLE)")
     private UserRole role;
 
-    public User toUser() {
-        User user = new User();
-        user.setUserName(this.userName);
-        user.setPassword(this.password);
-        user.setActive(true);
-        user.setRole(this.role.toString());
+    public UserInfo toUser() {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserName(this.userName);
+        userInfo.setPassword(this.password);
+        userInfo.setActive(true);
+        userInfo.setRole(this.role.toString());
 
-        return user;
+        return userInfo;
     }
 }

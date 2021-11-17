@@ -1,8 +1,8 @@
-package com.agile.monkeys.demo.user.service;
+package com.agile.monkeys.demo.users.service;
 
 import com.agile.monkeys.demo.data.UserRole;
-import com.agile.monkeys.demo.user.controller.CRUDDto;
-import com.agile.monkeys.demo.user.controller.UserDto;
+import com.agile.monkeys.demo.users.controller.CRUDDto;
+import com.agile.monkeys.demo.users.controller.UserDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import javax.transaction.Transactional;

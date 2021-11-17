@@ -14,7 +14,6 @@ import java.time.OffsetDateTime;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "\"customers\"")
 public class Customer {
 
     @Id

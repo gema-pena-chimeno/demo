@@ -13,7 +13,7 @@ public interface CustomerRepository extends JpaRepository<Customer, String> {
     @Transactional(readOnly = true)
     @Query(value =
             "select * " +
-            "from customers c " +
+            "from customer c " +
             "where c.active = true and (c.first_name ilike :query or c.last_name ilike :query) " +
             "order by c.last_name asc",
             nativeQuery = true)

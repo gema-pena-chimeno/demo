@@ -1,6 +1,6 @@
-package com.agile.monkeys.demo.user.controller;
+package com.agile.monkeys.demo.users.controller;
 
-import com.agile.monkeys.demo.data.User;
+import com.agile.monkeys.demo.data.UserInfo;
 import com.agile.monkeys.demo.data.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,9 +19,9 @@ public class UserDto {
 
     private UserRole role;
 
-    public UserDto(User user) {
-        this.id = user.getId();
-        this.userName = user.getUserName();
-        this.role = UserRole.valueOf(user.getRole());
+    public UserDto(UserInfo userInfo) {
+        this.id = userInfo.getId();
+        this.userName = userInfo.getUserName();
+        this.role = UserRole.valueOf(userInfo.getRole());
     }
 }

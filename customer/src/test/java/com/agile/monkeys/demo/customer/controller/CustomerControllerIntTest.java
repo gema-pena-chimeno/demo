@@ -271,16 +271,6 @@ public class CustomerControllerIntTest extends SpringBase {
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void delete_notExistingUser_notFoundException() {
         // given
-        String creationUserName = "user_active";
-        String fileName = "image.jpg";
-        String firstName = "Sara";
-        String lastName = "Conor";
-        CreateDto dto = generateCreateDto(firstName, lastName);
-        Principal principal = generatePrincipal(creationUserName);
-        MultipartFile file = generateMultipartFile(fileName, "image/jpeg");
-        final CustomerDto createdCustomer = customerController.create(file, dto, principal);
-        assertCustomerInDb(createdCustomer.getId(), firstName, lastName, fileName, creationUserName, null, true);
-
         String deleteUserName = "admin";
         Principal deletePrincipal = generatePrincipal(deleteUserName);
 
@@ -305,6 +295,13 @@ public class CustomerControllerIntTest extends SpringBase {
 
         // then
         assertCustomerDto(result, firstName, lastName, null);
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public void getCustomer_nonExistingCustomer_notFoundException() {
+        // when / then
+        assertThrows(NotFoundException.class, () -> customerController.getCustomer("unexisting-customer-id"));
     }
 
     @Test
