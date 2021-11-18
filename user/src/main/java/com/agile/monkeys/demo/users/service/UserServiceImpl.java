@@ -60,6 +60,7 @@ public class UserServiceImpl implements UserService {
     public UserDto create(CRUDDto dto) {
         UserInfo created = userInfoRepository.save(dto.toUser());
 
+        log.info("User {} ({}) created", created.getId(), created.getUserName());
         return toUserDto(created);
     }
 
@@ -69,12 +70,13 @@ public class UserServiceImpl implements UserService {
         validateLastAdmin(id, dto.getRole());
 
         if (!userInfoFromDb.getUserName().equals(dto.getUserName())) {
-            log.info("Change of user name ignored. Field not updatable.");
+            log.debug("Change of user name ignored. Field not updatable.");
         }
         userInfoFromDb.setPassword(dto.getPassword());
         userInfoFromDb.setRole(dto.getRole().toString());
         UserInfo updated = userInfoRepository.save(userInfoFromDb);
 
+        log.info("User {} ({}) updated", updated.getId(), updated.getUserName());
         return toUserDto(updated);
     }
 
@@ -91,6 +93,7 @@ public class UserServiceImpl implements UserService {
         userInfoFromDb.setRole(role.toString());
         UserInfo updated = userInfoRepository.save(userInfoFromDb);
 
+        log.info("Role of the user {} ({}) updated to {}", updated.getId(), updated.getUserName(), role);
         return toUserDto(updated);
     }
 
@@ -118,6 +121,7 @@ public class UserServiceImpl implements UserService {
 
     private void validateLastAdmin(String id, UserRole role) {
         if (role.equals(USER) && userInfoRepository.isLastAdmin(id, ADMIN.toString())) {
+            log.info("Last admin user {} cannot be changed to USER role", id);
             throw new LastAdminException("Role cannot be change. At least one admin should exist");
         }
     }

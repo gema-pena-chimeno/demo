@@ -4,10 +4,12 @@ import java.io.*;
 import java.nio.file.*;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @Service
 public class FileUploadServiceImpl implements FileUploadService {
 
@@ -32,7 +34,9 @@ public class FileUploadServiceImpl implements FileUploadService {
 
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+            log.debug("File file {} saved in folder {}", fileName, uploadPath);
         } catch (IOException ioe) {
+            log.error("Error saving file {}", fileName, ioe);
             throw new RuntimeException("Could not save image file: " + fileName, ioe);
         }
     }

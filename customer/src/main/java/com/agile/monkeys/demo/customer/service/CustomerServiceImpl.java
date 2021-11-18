@@ -6,6 +6,7 @@ import com.agile.monkeys.demo.customer.controller.CreateDto;
 import com.agile.monkeys.demo.customer.controller.CustomerDto;
 import com.agile.monkeys.demo.customer.domain.CustomerRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @AllArgsConstructor
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -50,6 +52,7 @@ public class CustomerServiceImpl implements CustomerService {
             fileUploadService.saveFile(created.getId(), fileName, multipartFile);
         }
 
+        log.info("Customer {} ({} {}) created", created.getId(), created.getFirstName(), created.getLastName());
         return toCustomerDto(created);
     }
 
@@ -72,6 +75,7 @@ public class CustomerServiceImpl implements CustomerService {
             fileUploadService.saveFile(updated.getId(), fileName, multipartFile);
         }
 
+        log.info("Customer {} ({} {}) update", updated.getId(), updated.getFirstName(), updated.getLastName());
         return toCustomerDto(updated);
     }
 
@@ -81,6 +85,7 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setActive(false);
         customer.setUpdateBy(userName);
         customerRepository.save(customer);
+        log.info("Customer {} ({} {}) deleted", customer.getId(), customer.getFirstName(), customer.getLastName());
     }
 
     private String getFilenameFromMultipartFile(MultipartFile multipartFile) {
@@ -109,9 +114,5 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         return found;
-    }
-
-    private boolean fileNotAvailable(MultipartFile multipartFile) {
-        return multipartFile == null || multipartFile.isEmpty();
     }
 }
