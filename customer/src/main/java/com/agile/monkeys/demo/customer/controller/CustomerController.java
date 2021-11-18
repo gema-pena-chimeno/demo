@@ -1,11 +1,13 @@
 package com.agile.monkeys.demo.customer.controller;
 
 import com.agile.monkeys.demo.customer.service.CustomerService;
+import com.agile.monkeys.demo.customer.service.ImageValidator;
 import com.agile.monkeys.demo.customer.service.NotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -24,6 +26,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class CustomerController {
 
+    private ImageValidator imageValidator;
     private CustomerService customerService;
 
     private static final String CREATE_DTO_FORMAT =
@@ -40,19 +43,21 @@ public class CustomerController {
             "}";
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public CustomerDto create(@RequestParam(value = "photo", required = false) @ValidImageFile MultipartFile multipartFile,
+    public CustomerDto create(@RequestParam(value = "photo", required = false) MultipartFile multipartFile,
                               @RequestPart("dto") @ApiParam(name = "dto", value = CREATE_DTO_FORMAT) @Valid CreateDto dto,
                               Principal principal) {
 
+        imageValidator.validate(multipartFile);
         return customerService.create(dto, multipartFile, principal.getName());
     }
 
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomerDto update(@PathVariable(value = "id") String id,
-                              @RequestParam(value = "photo", required = false) @ValidImageFile MultipartFile multipartFile,
+                              @RequestParam(value = "photo", required = false) MultipartFile multipartFile,
                               @RequestPart("dto") @ApiParam(name = "dto", value = UPDATE_DTO_FORMAT) @Valid UpdateDto dto,
                               Principal principal) {
 
+        imageValidator.validate(multipartFile);
         return customerService.update(id, dto, multipartFile, principal.getName());
     }
 
@@ -79,6 +84,11 @@ public class CustomerController {
     @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<Object> handleNotFoundException(NotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({InvalidMediaTypeException.class})
+    public ResponseEntity<Object> handleInvalidMediaTypeException(InvalidMediaTypeException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

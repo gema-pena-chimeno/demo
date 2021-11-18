@@ -17,38 +17,57 @@ The script has a parameter, MODULE, to set the name of the module to build:
 - user: creates the image user-app.
 
 Example of the command:
-
-`docker build --build-arg MODULE=customer --progress=plain -t customer-app .`
-
-`docker build --build-arg MODULE=user --progress=plain -t user-app .`
+```shell
+docker build --build-arg MODULE=customer --progress=plain -t customer-app .
+```
+```shell
+docker build --build-arg MODULE=user --progress=plain -t user-app .
+```
 
 ## Execute applications
 
 The images can be executed setting the required environment properties.
 
 For example, to execute the image in local, again the local database (see [LocalTest.md](./LocalTest.md)), we could execute the command:
-
-`docker run \
+```shell
+docker run \
 -e SPRING_DATASOURCE_URL='jdbc:postgresql://localhost:5432/demo_db' \
 -e SPRING_DATASOURCE_USERNAME='postgres' \
 -e SPRING_DATASOURCE_PASSWORD='dbPassword' \
 -e SPRING_JPA_HIBERNATE_DDL_AUTO='update' \
 -e IMAGE_FOLDER='/var/lib/docker/volumes/image-data/' \
 -e URL_PATH='/image-data' \
-customer-app`
+customer-app
+```
 
 For user-app we can execute:
-
-`docker run \
+```shell
+docker run \
 -e SPRING_DATASOURCE_URL='jdbc:postgresql://localhost:5432/demo_db' \
 -e SPRING_DATASOURCE_USERNAME='postgres' \
 -e SPRING_DATASOURCE_PASSWORD='dbPassword' \
 -e SPRING_JPA_HIBERNATE_DDL_AUTO='update' \
-user-app`
+user-app
+```
 
 ## Future improvements
 * Change from Basic Auth to OAuth2.
-* Fix the annotation ImageValidator, to validate the image file.
-* In case it's worth the effort, define and implement a better way to insert the first admin user in a secure way.
+* Improvement:
+  * Implement an annotation:
+    ``` java
+    @Target({ElementType.PARAMETER})
+    @Retention(RetentionPolicy.RUNTIME)
+    @Documented
+    @Constraint(validatedBy = {ImageValidator.class})
+    public @interface ValidImageFile {
+    }
+    ```
+  * And refactor ImageValidator to have a custom REST parameter validator
+    ``` java
+    @SupportedValidationTarget(ValidationTarget.PARAMETERS)
+    public class ImageValidator implements ConstraintValidator<ValidImageFile, MultipartFile> {
+      ... 
+    ```
+* If it's worth the effort, define and implement a better way to insert the first admin user in a secure way.
 * Investigate secure ways to keep the user passwords.
 * Add pagination to the customer and user list.

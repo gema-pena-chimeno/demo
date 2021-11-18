@@ -10,6 +10,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
@@ -96,10 +97,26 @@ public class CustomerControllerIntTest extends SpringBase {
 
     @Test
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public void create_withInvalidMimeType_invalidMediaTypeException() {
+        // given
+        String userName = "user_active";
+        String fileName = "not-image.txt";
+        String firstName = "Sara";
+        String lastName = "Cohen";
+        CreateDto dto = generateCreateDto(firstName, lastName);
+        Principal principal = generatePrincipal(userName);
+        MultipartFile file = generateMultipartFile(fileName, "application/txt");
+
+        // when / then
+        assertThrows(InvalidMediaTypeException.class, () -> customerController.create(file, dto, principal));
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void update_removePhoto_customerUpdated() {
         // given
         String creationUserName = "admin";
-        String fileName = "image.jpg";
+        String fileName = "image.png";
         String firstName = "Mikel";
         String lastName = "Cervantes";
         CreateDto dto = generateCreateDto(firstName, lastName);
@@ -131,12 +148,12 @@ public class CustomerControllerIntTest extends SpringBase {
     public void update_replacePhoto_customerUpdated() {
         // given
         String creationUserName = "user_active";
-        String fileName = "image.jpg";
+        String fileName = "image.png";
         String firstName = "Sara";
         String lastName = "Conor";
         CreateDto dto = generateCreateDto(firstName, lastName);
         Principal principal = generatePrincipal(creationUserName);
-        MultipartFile file = generateMultipartFile(fileName, "image/jpeg");
+        MultipartFile file = generateMultipartFile(fileName, "image/png");
         final CustomerDto createdCustomer = customerController.create(file, dto, principal);
         assertNotNull(createdCustomer.getPhotoUrl());
 
@@ -204,7 +221,7 @@ public class CustomerControllerIntTest extends SpringBase {
         String lastName = "Conor";
         CreateDto dto = generateCreateDto(firstName, lastName);
         Principal principal = generatePrincipal(creationUserName);
-        MultipartFile file = generateMultipartFile(fileName, "image/jpeg");
+        MultipartFile file = generateMultipartFile(fileName, "image/jpg");
         final CustomerDto createdCustomer = customerController.create(file, dto, principal);
         assertNotNull(createdCustomer.getPhotoUrl());
 
@@ -241,6 +258,33 @@ public class CustomerControllerIntTest extends SpringBase {
         assertThrows(NotFoundException.class, () -> customerController.update(
                 "unexisting-customer-id",
                 null,
+                updateDto,
+                updatePrincipal));
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public void update_invalidMimeType_invalidMediaTypeException() {
+        // given
+        String userName = "user_active";
+        String fileName = "image.jpg";
+        String firstName = "Luiz";
+        String lastName = "Baez";
+        CreateDto dto = generateCreateDto(firstName, lastName);
+        Principal principal = generatePrincipal(userName);
+        MultipartFile file = generateMultipartFile(fileName, "image/jpg");
+        final CustomerDto createdCustomer = customerController.create(file, dto, principal);
+        assertNotNull(createdCustomer.getPhotoUrl());
+
+        String newFileName = "not-image.txt";
+        MultipartFile newFile = generateMultipartFile(newFileName, "application/txt");
+        UpdateDto updateDto = generateUpdatedDto(firstName, lastName, true);
+        Principal updatePrincipal = generatePrincipal(userName);
+
+        // when / then
+        assertThrows(InvalidMediaTypeException.class, () -> customerController.update(
+                createdCustomer.getId(),
+                newFile,
                 updateDto,
                 updatePrincipal));
     }
@@ -318,7 +362,7 @@ public class CustomerControllerIntTest extends SpringBase {
         String firstName2 = "Robin";
         String lastName2 = "Hood";
         CreateDto dto2 = generateCreateDto(firstName2, lastName2);
-        MultipartFile file = generateMultipartFile(fileName, "image/jpeg");
+        MultipartFile file = generateMultipartFile(fileName, "image/jpg");
         final CustomerDto createdCustomer2 = customerController.create(file, dto2, principal);
         String firstName3 = "Carl";
         String lastName3 = "Hills";
@@ -398,7 +442,7 @@ public class CustomerControllerIntTest extends SpringBase {
         try {
             File file = ResourceUtils.loadAsFile("test_files/" + fileName);
             FileInputStream input = new FileInputStream(file);
-            MultipartFile multipartFile = new MockMultipartFile("file", file.getName(), mimeType, IOUtils.toByteArray(input));
+            MultipartFile multipartFile = new MockMultipartFile(fileName, file.getName(), mimeType, IOUtils.toByteArray(input));
             return multipartFile;
         } catch (IOException e) {
             throw new UncheckedIOException(e);

@@ -40,23 +40,13 @@ logging:
   level:
     com.agile.monkeys.demo: INFO
 
-#endpoints:
-#  loggers:
-#    sensitive: false # opening them on port 8081
-
 management:
   health:
     db:
       enabled: false
-  info:
-    git:
-      mode: full
+  server:
+    port: 8092
 
----
-spring:
-  config:
-    activate:
-      on-profile: production
 ---
 spring:
   jpa:
@@ -78,11 +68,6 @@ logging:
     org.hibernate.cache: DEBUG
     org.hibernate.stat: DEBUG
     com.agile.monkeys.demo: DEBUG
----
-spring:
-  config:
-    activate:
-      on-profile: production, stage
 
 ---
 spring:
