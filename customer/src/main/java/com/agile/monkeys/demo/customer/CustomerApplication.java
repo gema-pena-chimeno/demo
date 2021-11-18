@@ -13,8 +13,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EntityScan(basePackages="com.agile.monkeys.demo.data")
 @EnableJpaRepositories("com.agile.monkeys.demo.customer.domain")
 public class CustomerApplication {
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
         SpringApplication.run(CustomerApplication.class, args);
     }
 }

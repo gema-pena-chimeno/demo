@@ -45,3 +45,10 @@ For user-app we can execute:
 -e SPRING_DATASOURCE_PASSWORD='dbPassword' \
 -e SPRING_JPA_HIBERNATE_DDL_AUTO='update' \
 user-app`
+
+## Future improvements
+* Change from Basic Auth to OAuth2.
+* Fix the annotation ImageValidator, to validate the image file.
+* In case it's worth the effort, define and implement a better way to insert the first admin user in a secure way.
+* Investigate secure ways to keep the user passwords.
+* Add pagination to the customer and user list.

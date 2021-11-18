@@ -1,6 +1,5 @@
 package com.agile.monkeys.demo.customer.controller;
 
-
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ConstraintValidator;

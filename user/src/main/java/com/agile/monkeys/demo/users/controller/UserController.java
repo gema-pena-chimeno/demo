@@ -5,6 +5,7 @@ import com.agile.monkeys.demo.users.service.LastAdminException;
 import com.agile.monkeys.demo.users.service.NotFoundException;
 import com.agile.monkeys.demo.users.service.UserService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,29 +26,20 @@ public class UserController {
 
     private UserService userService;
 
-    private static final String CRUD_DTO_FORMAT =
-            "{\n" +
-                    "  \"firstName\":\"string\",\n" +
-                    "  \"lastName\":\"string\",\n" +
-                    "  \"role\":\"string\"\n" +
-                    "}";
-
-    // TDDO: add? @ApiParam(name = "dto", value = CRUD_DTO_FORMAT)
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDto create(@RequestBody @Valid CRUDDto dto) {
+    public UserDto create(@RequestBody @ApiParam(name = "dto") @Valid CRUDDto dto) {
 
         return userService.create(dto);
     }
 
-    // TODO: @ApiParam(name = "dto", value = CRUD_DTO_FORMAT)
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDto update(@PathVariable(value = "id") String id,
-                          @RequestBody @Valid CRUDDto dto) {
+                          @RequestBody @ApiParam(name = "dto") @Valid CRUDDto dto) {
 
         return userService.update(id, dto);
     }
 
-    @PutMapping(value = "{id}//updateRole/{role}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "{id}/updateRole/{role}", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDto updateRole(@PathVariable(value = "id") String id,
                               @PathVariable(value = "role") UserRole role) {
 

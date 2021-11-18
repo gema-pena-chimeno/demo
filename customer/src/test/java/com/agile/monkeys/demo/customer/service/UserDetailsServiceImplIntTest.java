@@ -2,8 +2,6 @@ package com.agile.monkeys.demo.customer.service;
 
 import com.agile.monkeys.demo.customer.SpringBase;
 import com.agile.monkeys.demo.customer.utils.ResourceUtils;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,7 +40,6 @@ public class UserDetailsServiceImplIntTest extends SpringBase {
         final UserDetails result = userDetailsService.loadUserByUsername("admin");
 
         // then
-        // TODO: change role names?
         assertEquals( "admin", result.getUsername());
         assertEquals(List.of("ROLE_ADMIN"), result.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
     }

@@ -7,23 +7,12 @@
         <groupId>com.agile.monkeys</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-<!--    <parent>-->
-<!--        <groupId>org.springframework.boot</groupId>-->
-<!--        <artifactId>spring-boot-starter-parent</artifactId>-->
-<!--        <version>2.5.6</version>-->
-<!--        <relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
-<!--    </parent>-->
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.agile.monkeys</groupId>
     <artifactId>demo.customer</artifactId>
 
     <properties>
-        <java.version>11</java.version>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-
-        <hibernate.version>5.4.2.Final</hibernate.version>
         <postgres.version>42.2.5</postgres.version>
         <testcontainers.version>1.16.0</testcontainers.version>
     </properties>

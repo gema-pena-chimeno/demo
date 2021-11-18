@@ -4,9 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.ConstraintValidatorContext;
 
 import static org.junit.jupiter.api.Assertions.*;
 

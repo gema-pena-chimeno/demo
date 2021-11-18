@@ -3,6 +3,7 @@ package com.agile.monkeys.demo.customer.controller;
 import com.agile.monkeys.demo.customer.service.CustomerService;
 import com.agile.monkeys.demo.customer.service.NotFoundException;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,26 +26,31 @@ public class CustomerController {
 
     private CustomerService customerService;
 
-    private static final String CRUD_DTO_FORMAT =
+    private static final String CREATE_DTO_FORMAT =
             "{\n" +
             "  \"firstName\":\"string\",\n" +
             "  \"lastName\":\"string\"\n" +
             "}";
 
-    //TODO: add? @ApiParam(name = "dto", value = CRUD_DTO_FORMAT)
+    private static final String UPDATE_DTO_FORMAT =
+            "{\n" +
+            "  \"firstName\":\"string\",\n" +
+            "  \"lastName\":\"string\",\n" +
+            "  \"ignoreFile\":\"boolean\",\n" +
+            "}";
+
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomerDto create(@RequestParam(value = "photo", required = false) @ValidImageFile MultipartFile multipartFile,
-                              @RequestPart("dto") @Valid CreateDto dto,
+                              @RequestPart("dto") @ApiParam(name = "dto", value = CREATE_DTO_FORMAT) @Valid CreateDto dto,
                               Principal principal) {
 
         return customerService.create(dto, multipartFile, principal.getName());
     }
 
-    // TODO: add? @ApiParam(name = "dto", value = CRUD_DTO_FORMAT)
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomerDto update(@PathVariable(value = "id") String id,
                               @RequestParam(value = "photo", required = false) @ValidImageFile MultipartFile multipartFile,
-                              @RequestPart("dto") @Valid UpdateDto dto,
+                              @RequestPart("dto") @ApiParam(name = "dto", value = UPDATE_DTO_FORMAT) @Valid UpdateDto dto,
                               Principal principal) {
 
         return customerService.update(id, dto, multipartFile, principal.getName());

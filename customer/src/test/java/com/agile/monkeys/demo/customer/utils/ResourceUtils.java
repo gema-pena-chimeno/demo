@@ -8,7 +8,6 @@ import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-
 public class ResourceUtils {
 
     private ResourceUtils() {
