@@ -6,7 +6,7 @@ It contains 3 modules:
 * Customer: customer REST API. See [README.md](./customer/README.md)
 * User: user REST API. See [README.md](./user/README.md)
 
-See [HELP.md](./user/HELP.md) for information about Spring and Spring Boot.
+See [HELP.md](./HELP.md) for information about Spring and Spring Boot.
 
 ## Build applications
 
@@ -18,17 +18,17 @@ The script has a parameter, MODULE, to set the name of the module to build:
 
 Example of the command:
 ```shell
-docker build --build-arg MODULE=customer --progress=plain -t customer-app .
+docker build --build-arg MODULE=customer -t customer-app .
 ```
 ```shell
-docker build --build-arg MODULE=user --progress=plain -t user-app .
+docker build --build-arg MODULE=user -t user-app .
 ```
 
 ## Execute applications
 
 The images can be executed setting the required environment properties.
 
-For example, to execute the image in local, again the local database (see [LocalTest.md](./LocalTest.md)), we could execute the command:
+For example, to execute the image in local, again the local database (see [LocalTesting.md](./LocalTesting.md)), we could execute the command:
 ```shell
 docker run \
 -e SPRING_DATASOURCE_URL='jdbc:postgresql://localhost:5432/demo_db' \
