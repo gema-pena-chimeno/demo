@@ -71,3 +71,4 @@ user-app
 * If it's worth the effort, define and implement a better way to insert the first admin user in a secure way.
 * Investigate secure ways to keep the user passwords.
 * Add pagination to the customer and user list.
+* Adding support to more images, or limitation in the size of the image.
