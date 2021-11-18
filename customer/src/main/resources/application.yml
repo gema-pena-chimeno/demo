@@ -47,7 +47,12 @@ logging:
 #  loggers:
 #    sensitive: false # opening them on port 8081
 
+
 management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
   health:
     db:
       enabled: false
