@@ -41,7 +41,7 @@ postgres`
 
 Access to the database:
 
-`psql -h localhost -U postgres 
+`psql -h localhost -U postgres `
 
 And create the database:
 
@@ -49,7 +49,7 @@ And create the database:
 
 ### Create the first admin user  (only the first time)
 
-During the creation of the dabnIn order to create the first user, access to the local database:
+After the creation of the database, to insert the first user, access to the local database:
 
 `psql -h localhost -U postgres`
 
@@ -67,16 +67,19 @@ These applications are configured to be executed with environment variables.
 
 Configure the database environment variables to execute the applications:
 
-SPRING_DATASOURCE_URL = jdbc:postgresql://localhost:5432/demo_db
-SPRING_DATASOURCE_USERNAME = postgres
-SPRING_DATASOURCE_PASSWORD = 1234
-SPRING_JPA_HIBERNATE_DDL_AUTO = update
+_SPRING_DATASOURCE_URL = jdbc:postgresql://localhost:5432/demo_db_
 
-In order to configure the application Customer more properties must be configured.  See [README.md](./customer/README.md)
+_SPRING_DATASOURCE_USERNAME = postgres_
+
+_SPRING_DATASOURCE_PASSWORD = 1234_
+
+_SPRING_JPA_HIBERNATE_DDL_AUTO = update_
+
+In order to configure the application Customer more properties must be set. See customer [README.md](./customer/README.md) for details.
 
 ## Sum up
 
-Once the database is created and the first user, as the data is saved in a local folder, we just have to execute the postgres image to keep testing our application. 
+Once the database is created and the first user inserted, as the data is saved in a local folder, we just have to execute the postgres image to keep testing our applications. 
 
 `docker run -d --rm \
 --name dev-postgres \
@@ -84,5 +87,3 @@ Once the database is created and the first user, as the data is saved in a local
 -v ${HOME}/postgres-data/:/var/lib/postgresql/data \
 -p 5432:5432 \
 postgres`
-
-Note that the data inserted and updated in local will be kept.

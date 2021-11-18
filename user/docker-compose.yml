@@ -15,10 +15,8 @@ services:
   app:
     depends_on:
       - db
-    container_name: demo-user-app
-    image: 'docker-spring-boot-postgres:latest'
-    build:
-      context: .
+    container_name: user-app
+    image: 'user-app:latest'
     env_file: ./.env
     ports:
       - $APP_DOCKER_PORT_MAPPING
