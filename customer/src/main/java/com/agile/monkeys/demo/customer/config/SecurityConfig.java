@@ -32,9 +32,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService);
     }
 
+    /**
+     * Note that Spring recommend using csrf when serving browser clients csrf can be disabled if the API is not
+     * requested directly by a browser client.
+     * @param http HttpSecurity instance
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // TODO: remove this?
         http.csrf().disable();
         http.authorizeRequests()
                     .antMatchers("/customer/**").hasAnyRole(USER.toString(), ADMIN.toString())
