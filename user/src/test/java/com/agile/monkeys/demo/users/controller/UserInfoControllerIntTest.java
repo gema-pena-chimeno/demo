@@ -4,6 +4,7 @@ import com.agile.monkeys.demo.data.UserInfo;
 import com.agile.monkeys.demo.data.UserRole;
 import com.agile.monkeys.demo.users.SpringBase;
 import com.agile.monkeys.demo.users.domain.UserInfoRepository;
+import com.agile.monkeys.demo.users.service.CannotDeleteItselfException;
 import com.agile.monkeys.demo.users.service.LastAdminException;
 import com.agile.monkeys.demo.users.service.NotFoundException;
 import org.junit.Test;
@@ -14,6 +15,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -232,9 +235,10 @@ public class UserInfoControllerIntTest extends SpringBase {
         String password = "1234";
         CRUDDto dto = generateCRUDDto(userName, password, role);
         final UserDto createdUser = userController.create(dto);
+        Principal principal = generatePrincipal("admin-1");
 
         // when
-        userController.delete(createdUser.getId());
+        userController.delete(createdUser.getId(), principal);
 
         // then
         assertUserInDb(createdUser.getId(), userName, password, role, false);
@@ -242,9 +246,27 @@ public class UserInfoControllerIntTest extends SpringBase {
 
     @Test
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public void delete_notExistingUser_notFoundException() {
+    public void delete_deletingItself_userInactive() {
+        // given
+        UserRole role = USER;
+        String userName = "user-to-delete-2";
+        String password = "1234";
+        CRUDDto dto = generateCRUDDto(userName, password, role);
+        final UserDto createdUser = userController.create(dto);
+        Principal principal = generatePrincipal(userName);
+
         // when / then
-        assertThrows(NotFoundException.class, () -> userController.delete("unexisting-user-id"));
+        assertThrows(CannotDeleteItselfException.class, () -> userController.delete(createdUser.getId(), principal));
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public void delete_notExistingUser_notFoundException() {
+        // given
+        Principal principal = generatePrincipal("admin-1");
+
+        // when / then
+        assertThrows(NotFoundException.class, () -> userController.delete("unexisting-user-id", principal));
     }
 
     @Test
@@ -291,7 +313,7 @@ public class UserInfoControllerIntTest extends SpringBase {
         String password3 = "password";
         CRUDDto dto3 = generateCRUDDto(userName3, password3, role3);
         final UserDto createdUser3 = userController.create(dto3);
-        userController.delete(createdUser3.getId());
+        userController.delete(createdUser3.getId(), generatePrincipal("admin"));
 
         // when
         List<UserDto> result = userController.list();
@@ -318,7 +340,7 @@ public class UserInfoControllerIntTest extends SpringBase {
 
         CRUDDto dto5 = generateCRUDDto("peter.fox.1974", "1234", USER);
         final UserDto createdUser = userController.create(dto5);
-        userController.delete(createdUser.getId());
+        userController.delete(createdUser.getId(), generatePrincipal("admin"));
 
         // when/ then
         List<UserDto> result1 = userController.search("peter");
@@ -363,6 +385,15 @@ public class UserInfoControllerIntTest extends SpringBase {
                 () -> assertEquals(password, userInfo.get().getPassword()),
                 () -> assertEquals(role.toString(), userInfo.get().getRole()),
                 () -> assertEquals(active, userInfo.get().isActive()));
+    }
+
+    private Principal generatePrincipal(String userName) {
+        return new Principal() {
+            @Override
+            public String getName() {
+                return userName;
+            }
+        };
     }
 }
 

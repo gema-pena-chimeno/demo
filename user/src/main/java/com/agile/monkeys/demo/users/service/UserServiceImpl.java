@@ -97,8 +97,12 @@ public class UserServiceImpl implements UserService {
         return toUserDto(updated);
     }
 
-    public void delete(String id) {
+    public void delete(String id, String userName) {
         UserInfo userInfo = findUser(id);
+
+        if (userInfo.getUserName().equals(userName)) {
+            throw new CannotDeleteItselfException("Cannot delete itself");
+        }
 
         userInfo.setActive(false);
         userInfoRepository.save(userInfo);

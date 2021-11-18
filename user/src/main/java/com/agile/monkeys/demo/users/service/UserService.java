@@ -25,8 +25,14 @@ public interface UserService extends UserDetailsService {
     @Transactional
     UserDto updateRole(String id, UserRole role);
 
+    /**
+     * Deletes a user.
+     * @param id user id
+     * @param userName user requesting the operation.
+     * @throws CannotDeleteItselfException
+     */
     @Transactional
-    void delete(String id);
+    void delete(String id, String userName);
 
 }
 

@@ -1,12 +1,14 @@
 package com.agile.monkeys.demo.users.controller;
 
 import com.agile.monkeys.demo.data.UserRole;
+import com.agile.monkeys.demo.users.service.CannotDeleteItselfException;
 import com.agile.monkeys.demo.users.service.LastAdminException;
 import com.agile.monkeys.demo.users.service.NotFoundException;
 import com.agile.monkeys.demo.users.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,8 +50,8 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)        // or use @DeleteMapping
-    public void delete(@PathVariable("id") String id){
-        userService.delete(id);
+    public void delete(@PathVariable("id") String id, Principal principal) {
+        userService.delete(id, principal.getName());
     }
 
     @GetMapping(path = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -72,8 +75,18 @@ public class UserController {
     }
 
     @ExceptionHandler({LastAdminException.class})
-    public ResponseEntity<Object> handleNotFoundException(LastAdminException e) {
+    public ResponseEntity<Object> handleLastAdminException(LastAdminException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
+    }
+
+    @ExceptionHandler({CannotDeleteItselfException.class})
+    public ResponseEntity<Object> handleCannotDeleteItselfException(CannotDeleteItselfException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
+    }
+
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+        return new ResponseEntity<>("User already exists", HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
