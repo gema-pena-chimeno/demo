@@ -6,6 +6,12 @@ It contains 3 modules:
 * Customer: customer REST API. See [README.md](./customer/README.md)
 * User: user REST API. See [README.md](./user/README.md)
 
+The code was developed with Java 11 and Spring Boot, to implement 2 microservices providing the REST API's.
+
+The database is Postgres and is managed by Hibernate through Spring JPA.
+
+The testing of the code was done using test-container, that allows to implement integration test with postgres databases.
+
 See [HELP.md](./HELP.md) for information about Spring and Spring Boot.
 
 ## Build applications
